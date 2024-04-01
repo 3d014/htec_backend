@@ -23,29 +23,24 @@ app.use(express.json())
 
 app.post('/api/create/user',async (req,res)=>{
     const {ime,prezime,email,sifra} = req.body;
-    console.log(req.body);
+    //console.log(req.body);
 
     if(!ime || !prezime || !email || !sifra){
         return res.status(400).json({success:false,msg:'Polja ne smiju biti prazna'})
     }
 
     const userExistQuery = `
-      SELECT * FROM korisnici
+      SELECT COUNT(*) FROM korisnici
       WHERE email = ?`;
 
     const userAlreadyExists = await connection.query(userExistQuery, [
       email
     ]);
 
-    if (userAlreadyExists.length > 0) {
-        const existingEmail = userAlreadyExists.find(
-          (user) => user.email === email
-        );
-        
-        if (existingEmail) {
-          return res.status(400).json({success:false,msg:'User already exists'});
-        };
 
+    if (userAlreadyExists) {      
+        return res.status(400).json({success:false,msg:'User already exists'});
+        
     };
     
 
