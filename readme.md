@@ -5,3 +5,5 @@ Trenutni kod pokazuje logiku registracije korisnika na stranicu. Ono sto ce dalj
 Edit: ispraviti provjeru da li user postoji
 
 Edit: ispravljeno
+
+TODO: napraviti routes i forgot password mehanizam
