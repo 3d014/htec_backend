@@ -47,6 +47,7 @@ app.post('/api/create/user',async (req,res)=>{
         };
 
     };
+    
 
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = await bcrypt.hash(sifra,salt);
