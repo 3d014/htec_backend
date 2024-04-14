@@ -1,30 +1,71 @@
-// import bcrypt from "bcrypt";
-// import { User } from "../models/User";
-// import { createToken } from "../middleware/auth-middleware";
-// import { Request, Response } from "express";
+import bcrypt from "bcrypt";
+import { User } from "../models/User";
+import express, { Router } from "express";
+import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import { BlacklistToken } from "../models/TokenBlacklist";
+import { Model } from "sequelize";
+import { User as UserType } from "../interfaces/User";
+import { protectedRoute } from "../middleware/auth-middleware";
+import { Request as AuthRequest } from "../interfaces/Request";
+dotenv.config();
 
-// // create_user funkcija ce se pozivati na post request za kreiranje korisnika
+export const authRouter: Router = express.Router();
 
-// const login_user = async (req: Request, res: Response) => {
-//   const { email, sifra } = req.body;
-//   const user = await User.findOne({ where: { email } });
+authRouter.post("/login", async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  const user: Model<UserType> | null = await User.findOne({
+    where: { email },
+  });
 
-//   if (!user) {
-//     return res.status(400);
-//   }
-//   const auth = await bcrypt.compare(sifra, user.pw);
-//   if (!auth) {
-//     return res.status(400).json({ success: false, msg: "Incorrect password" });
-//   }
+  if (!user) {
+    return res
+      .status(401)
+      .json({ success: false, msg: "Incorrect password or email" });
+  }
+  const auth = await bcrypt.compare(password, user.dataValues.pw);
+  if (!auth) {
+    return res
+      .status(401)
+      .json({ success: false, msg: "Incorrect password or email" });
+  }
+  console.log("test", user.dataValues);
 
-//   const token = createToken(user);
-//   res.send({ token });
-//   return res.status(200).json({ success: true, msg: `Welcome ${user.ime}` });
-// };
+  const token = jwt.sign(
+    {
+      firstName: user.dataValues.firstName,
+      lastName: user.dataValues.lastName,
+      email: user.dataValues.email,
+      role: user.dataValues.userRole,
+    },
+    process.env.JWT_SECRET_KEY as string,
+    {
+      expiresIn: "1h",
+    }
+  );
 
-// const logout_user = (req: Request, res: Response) => {
-//   res.cookie("jwt", "", { maxAge: 1 });
-//   res.redirect("/api/login");
-// };
+  return res.status(200).json({ success: true, token });
+});
 
-// export { login_user, logout_user };
+authRouter.delete("/logout", (req: Request, res: Response) => {
+  const { token } = req.body;
+  try {
+    const decoded: any = jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY as string
+    );
+
+    BlacklistToken.create({ token });
+    return res.status(200).end();
+  } catch (e) {
+    console.error("error verifying token", e);
+    return res
+      .status(403)
+      .json({ success: false, msg: "error verifying token" });
+  }
+});
+
+authRouter.get("/test", protectedRoute, (req: AuthRequest, res: Response) => {
+  return res.send(`hello from protected ${req.user?.firstName}`);
+});

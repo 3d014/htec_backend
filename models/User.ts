@@ -1,8 +1,6 @@
-const { Sequelize, Model, DataTypes } = require("sequelize");
-const sequelize = new Sequelize("htec", "root", "root", {
-  host: "127.0.0.1",
-  dialect: "mysql",
-});
+import { sequelize } from "../db/SequalizeSetup";
+
+import { DataTypes } from "sequelize";
 
 //User model koji se slaze sa strukturom tabele User u nasoj bazi podataka
 

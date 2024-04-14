@@ -4,16 +4,16 @@ const sequelize = new Sequelize("htec", "root", "root", {
   host: "127.0.0.1",
   dialect: "mysql",
 });
-const authRoutes = require("./routes/authRoutes");
+
 import cors from "cors";
 import { userRouter } from "./controllers/UserController/userController";
+import { authRouter } from "./controllers/authController";
 
 export const app = express();
 app.use(cors());
 app.use(express.json());
-// app.use(authRoutes);
 app.use("/api/users/", userRouter);
-
+app.use("/api/auth/", authRouter);
 (async () => {
   await sequelize.sync({ force: true });
   app.listen(5000, () => {

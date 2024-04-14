@@ -1,28 +1,27 @@
-// require("dotenv").config();
+import { NextFunction, Response } from "express";
+import jwt from "jsonwebtoken";
+import { BlacklistToken } from "../models/TokenBlacklist";
+import { AuthUser, Request } from "../interfaces/Request";
+export const protectedRoute = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const token = req.headers["authorization"];
 
-// import jwt from "jsonwebtoken";
+  if (!token) {
+    return res.status(401).end();
+  }
+  const isBlacklisted = !!(await BlacklistToken.findOne({ where: { token } }));
+  if (isBlacklisted) {
+    return res.status(403).json({ success: false, msg: "Token blacklisted" });
+  }
 
-// export const createToken = (user) => {
-//   const payload = {
-//     email: user.email,
-//   };
-
-//   const secret = process.env.JWT_SECRET_KEY;
-//   const options = { expiresIn: "1h" };
-
-//   return jwt.sign(payload, secret, options);
-// };
-
-// export const requireAuth = (req, res, next) => {
-//   const token = req.cookies.jwt;
-//   if (!token) {
-//     return res.redirect("/api/login");
-//   }
-
-//   jwt.verify(token, "your-secret-key", (err, result) => {
-//     if (err) {
-//       return res.redirect("/api/login");
-//     }
-//     next();
-//   });
-// };
+  jwt.verify(token, process.env.JWT_SECRET_KEY as string, (err, result) => {
+    if (err) {
+      return res.status(403).end();
+    }
+    req.user = result as AuthUser;
+    next();
+  });
+};

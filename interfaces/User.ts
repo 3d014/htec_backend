@@ -3,7 +3,7 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  pw?: string;
+  pw: string;
   createdAt: Date;
   updatedAt: Date;
   resetPwLink: string;

@@ -31,17 +31,14 @@ userRouter.post("/create", async (req: Request, res: Response) => {
 });
 
 userRouter.delete("/", async (req: Request, res: Response) => {
-  const { email } = req.body;
-  const user = await User.findOne({ where: { email } });
-
-  if (!user) {
-    res.status(400).json({ success: false, msg: "User doesn't exist" });
-  }
-
-  const userDestroyed = await user.destroy();
-  if (!userDestroyed) {
-    res.status(400).json({ success: false, msg: "Something went wrong" });
-  }
-
-  res.status(200).json({ success: true, msg: "User removed from database" });
+  // const { email } = req.body;
+  // const user = await User.findOne({ where: { email } });
+  // if (!user) {
+  //   res.status(400).json({ success: false, msg: "User doesn't exist" });
+  // }
+  // const userDestroyed = await user.destroy();
+  // if (!userDestroyed) {
+  //   res.status(400).json({ success: false, msg: "Something went wrong" });
+  // }
+  // res.status(200).json({ success: true, msg: "User removed from database" });
 });
