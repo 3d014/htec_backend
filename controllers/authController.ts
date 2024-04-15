@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { BlacklistToken } from "../models/TokenBlacklist";
 import { Model } from "sequelize";
-import { User as UserType } from "../interfaces/User";
+import { UserType } from "../interfaces/User";
 import { protectedRoute } from "../middleware/auth-middleware";
 import { Request as AuthRequest } from "../interfaces/Request";
 dotenv.config();
@@ -37,7 +37,7 @@ authRouter.post("/login", async (req: Request, res: Response) => {
       firstName: user.dataValues.firstName,
       lastName: user.dataValues.lastName,
       email: user.dataValues.email,
-      role: user.dataValues.userRole,
+      roles: [user.dataValues.userRole],
     },
     process.env.JWT_SECRET_KEY as string,
     {
@@ -48,7 +48,7 @@ authRouter.post("/login", async (req: Request, res: Response) => {
   return res.status(200).json({ success: true, token });
 });
 
-authRouter.delete("/logout", (req: Request, res: Response) => {
+authRouter.post("/logout", (req: Request, res: Response) => {
   const { token } = req.body;
   try {
     const decoded: any = jwt.verify(
