@@ -6,6 +6,7 @@ import { authRouter } from "./controllers/authController";
 import { resetPasswordRouter } from "./controllers/resetPasswordController";
 import { sequelize } from "./db/SequalizeSetup";
 import { productsRouter } from "./controllers/productController";
+import { vendorRouter } from "./controllers/VendorController/vendorController";
 
 export const app = express();
 app.use(cors());
@@ -14,6 +15,7 @@ app.use("/api/users/", userRouter);
 app.use("/api/auth/", authRouter);
 app.use("/api/reset/password/", resetPasswordRouter);
 app.use("/api/products", productsRouter);
+app.use("/api/vendor",vendorRouter);
 (async () => {
   await sequelize.sync({ force: true });
   app.listen(5000, () => {

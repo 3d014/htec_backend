@@ -1,0 +1,16 @@
+const delete_user = async(req,res) =>{
+    const{email} = req.body;
+    console.log(email);
+    const user = await User.findOne({where:{email}});
+
+    if(!user){
+        return res.status(400).json({success:false, msg:'User doesn\'t exist'});
+    }
+
+    const userDestroyed = await user.destroy();
+    if(!userDestroyed){
+        return res.status(400).json({success:false, msg:'Something went wrong'});
+    }
+    
+    return res.status(200).json({success:true, msg:'User removed from database'});  
+};
