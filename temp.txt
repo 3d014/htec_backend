@@ -14,3 +14,8 @@ const delete_user = async(req,res) =>{
     
     return res.status(200).json({success:true, msg:'User removed from database'});  
 };
+
+
+PITANJA:
+Kad se unese faktura i postoji avans sa tim vendorom da li se automatski oduzima od njega
+Da li avans ulazi u budzet?

@@ -37,7 +37,7 @@ vendorRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
   
 
   vendorRouter.post("/", protectedRoute, async (req: Request, res: Response) => {
-    const { vendorName, vendorAddress, vendorIdentificationNumber,vendorCategory, vendorPDVNumber, vendorCity, vendorTelephoneNumber, vendorEmail, vendorTransactionNumber } = req.body;
+    const { vendorName, vendorAddress, vendorIdentificationNumber,vendorCategoryId, vendorPDVNumber, vendorCity, vendorTelephoneNumber, vendorEmail, vendorTransactionNumber } = req.body;
 
     try {
         // Convert array of telephone numbers to comma-separated string
@@ -56,7 +56,7 @@ vendorRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
             vendorIdentificationNumber,
             vendorPDVNumber,
             vendorCity,
-            vendorCategory,
+            vendorCategoryId,
             vendorTelephone: formattedTelephone, // Store telephone numbers as comma-separated string
             vendorEmail: formattedEmail, // Store email addresses as comma-separated string
             vendorTransactionNumber: formattedTransactionNumber, // Store transaction numbers as comma-separated string
