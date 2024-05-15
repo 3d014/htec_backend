@@ -9,3 +9,5 @@ export const Categories = sequelize.define("Categories",{
         autoIncrement: false,
     }
 })
+
+// Category is synchronoized with latest ER Model

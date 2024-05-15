@@ -29,11 +29,6 @@ export const Vendor = sequelize.define("Vendor",{
         primaryKey: false,
         autoIncrement: false,
       },
-      vendorCategoryId:{
-        type:DataTypes.INTEGER,
-        primaryKey:false,
-        autoIncrement:false,
-      },
       vendorTelephone: {
         type: DataTypes.STRING,
         primaryKey: false,
@@ -49,8 +44,13 @@ export const Vendor = sequelize.define("Vendor",{
         primaryKey: false,
         autoIncrement: false,
       },
-
-
+      supportsAvans : {
+        type : DataTypes.BOOLEAN,
+        primaryKey : false,
+        autoIncrement : false,
+      }
 
 
 })
+
+// Vendor is synchronized with latest ER Model

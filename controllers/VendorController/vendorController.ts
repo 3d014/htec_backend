@@ -40,16 +40,9 @@ vendorRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
     const { vendorName, vendorAddress, vendorIdentificationNumber,vendorCategoryId, vendorPDVNumber, vendorCity, vendorTelephoneNumber, vendorEmail, vendorTransactionNumber } = req.body;
 
     try {
-        // Convert array of telephone numbers to comma-separated string
         const formattedTelephone = vendorTelephoneNumber?.join(',')||'';
-
-        // Convert array of email addresses to comma-separated string
         const formattedEmail = vendorEmail?.join(',')||'';
-
-        // Convert array of transaction numbers to comma-separated string
         const formattedTransactionNumber = vendorTransactionNumber?.join(',')||'';
-
-        // Create a new vendor record in the database
         const newVendor = await Vendor.create({
             vendorName,
             vendorAddress,
@@ -57,9 +50,9 @@ vendorRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
             vendorPDVNumber,
             vendorCity,
             vendorCategoryId,
-            vendorTelephone: formattedTelephone, // Store telephone numbers as comma-separated string
-            vendorEmail: formattedEmail, // Store email addresses as comma-separated string
-            vendorTransactionNumber: formattedTransactionNumber, // Store transaction numbers as comma-separated string
+            vendorTelephone: formattedTelephone, 
+            vendorEmail: formattedEmail, 
+            vendorTransactionNumber: formattedTransactionNumber, 
         });
 
         return res.status(201).json(newVendor);
@@ -68,3 +61,4 @@ vendorRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 });
+

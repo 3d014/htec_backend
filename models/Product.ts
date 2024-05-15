@@ -8,9 +8,21 @@ export const Product = sequelize.define("Product", {
     primaryKey: false,
     autoIncrement: false,
   },
-  measuringUnit: {
-    type: DataTypes.STRING,
+  measuringUnitId: {
+    type: DataTypes.INTEGER,
     primaryKey: false,
     autoIncrement: false,
   },
+  categoryId: {
+    type: DataTypes.INTEGER,
+    primaryKey: false,
+    autoIncrement: false,    
+  },
+  description: {
+    type: DataTypes.STRING,
+    primaryKey: false,
+    autoIncrement: false,
+  }
 });
+
+// Product is synchronized with latest ER Model

@@ -19,3 +19,7 @@ const delete_user = async(req,res) =>{
 PITANJA:
 Kad se unese faktura i postoji avans sa tim vendorom da li se automatski oduzima od njega
 Da li avans ulazi u budzet?
+
+
+UDARDITI:
+Promijeniti sve controlere dodati atribute koje fale
