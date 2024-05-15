@@ -54,8 +54,9 @@ resetPasswordRouter.post("/getlink", async (req: Request, res: Response) => {
       });
     }
   });
-  console.log("toekn for pw reset", user.dataValues.resetPwLink);
+  console.log("token for pw reset", user.dataValues.resetPwLink);
 });
+
 resetPasswordRouter.post("/checktoken", async (req: Request, res: Response) => {
   const { token } = req.body;
   const user = await User.findOne({ where: { resetPwLink: token } });

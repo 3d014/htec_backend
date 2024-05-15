@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "../db/SequalizeSetup";
 
 
-export const Vendors = sequelize.define("Vendors",{
+export const Vendor = sequelize.define("Vendor",{
     vendorId: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     vendorName: {
         type: DataTypes.STRING,
@@ -29,8 +29,8 @@ export const Vendors = sequelize.define("Vendors",{
         primaryKey: false,
         autoIncrement: false,
       },
-      vendorCategory:{
-        type:DataTypes.STRING,
+      vendorCategoryId:{
+        type:DataTypes.INTEGER,
         primaryKey:false,
         autoIncrement:false,
       },
@@ -49,5 +49,8 @@ export const Vendors = sequelize.define("Vendors",{
         primaryKey: false,
         autoIncrement: false,
       },
+
+
+
 
 })
