@@ -8,7 +8,6 @@ export const vendorRouter: Router = express.Router();
 
 vendorRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
     const { vendorId } = req.body;
-   
     let vendor;
     if (!vendorId) {
       vendor = await Vendor.findAll();
@@ -68,7 +67,7 @@ vendorRouter.delete('/', protectedRoute, async (req:Request, res: Response) =>{
 
   try{
     if(vendorId){
-      Vendor.destroy({
+      await Vendor.destroy({
         where:{
           vendorId : req.body.vendorId,
         } 

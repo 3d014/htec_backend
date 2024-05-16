@@ -42,7 +42,7 @@ categoriesRouter.delete('/', protectedRoute, async(req: Request , res: Response)
     
     try{
         if(categoryId){
-            Category.destroy({
+            await Category.destroy({
                 where: {
                     categoryId : req.body.categoryId,
                 }

@@ -25,3 +25,6 @@ UDARDITI:
 Promijeniti sve controlere dodati atribute koje fale
 Ja saljem sve strane kljuceve 
 po idu oni na frontenu kupe koji je objekat
+
+TK MREZE: nemoj da neko ne zna dig i ns lookup 
+967 054 293

@@ -13,8 +13,12 @@ export const Product = sequelize.define("Product", {
     primaryKey: false,
     autoIncrement: false,
   },
-  categoryId: {
+  categoryId: { // foreign key
     type: DataTypes.INTEGER,
+    references: {
+      model : 'Category',
+      key : 'categoryId',
+    },
     primaryKey: false,
     autoIncrement: false,    
   },
