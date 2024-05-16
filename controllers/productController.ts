@@ -5,27 +5,28 @@ import { Op } from "sequelize";
 
 export const productsRouter: Router = express.Router();
 productsRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
-  const { productName } = req.body;
+  const { productId } = req.body;
   const limit = 10;
   let products;
-  if (!productName) {
+  if (!productId) {
     products = await Product.findAll();
   } else {
     products = await Product.findAll({
       where: {
-        productName: { [Op.startsWith]: productName },
+        productId: req.body.productId
       },
     });
   }
 
   return res.send(products);
 });
+
 productsRouter.delete("/", protectedRoute, (req: Request, res: Response) => {
-  const { productName } = req.body;
-  if (productName) {
+  const { productId } = req.body;
+  if (productId) {
     Product.destroy({
       where: {
-        productName: req.body.productName,
+        productId : req.body.productId,
       },
     })
       .then(() => {
@@ -45,10 +46,12 @@ productsRouter.post(
   "/",
   protectedRoute,
   async (req: Request, res: Response) => {
-    const { productName, measuringUnit } = req.body;
+    const { productName, measuringUnit, categoryId, description} = req.body;
     const product = await Product.create({
       productName,
       measuringUnit,
+      categoryId,
+      description
     });
     product.save();
     return res.status(200).end();

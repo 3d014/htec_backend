@@ -16,7 +16,7 @@ vendorRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
     } else {
       vendor = await Vendor.findAll({
         where: {
-          vendorId: { [Op.startsWith]: vendorId },
+          vendorId: req.body.vendorId,
         },
       });
     }
@@ -31,13 +31,13 @@ vendorRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
         vendor.vendorEmail = vendor.vendorEmail.split(',').map((email: string) => email.trim());
     });
   
-    return res.send(vendor);
+    return res.status(200).json(vendor);
   });
 
   
 
   vendorRouter.post("/", protectedRoute, async (req: Request, res: Response) => {
-    const { vendorName, vendorAddress, vendorIdentificationNumber,vendorCategoryId, vendorPDVNumber, vendorCity, vendorTelephoneNumber, vendorEmail, vendorTransactionNumber } = req.body;
+    const { vendorName, vendorAddress, vendorIdentificationNumber,vendorPDVNumber, vendorCity, vendorTelephoneNumber, vendorEmail, vendorTransactionNumber,supportsAvans } = req.body;
 
     try {
         const formattedTelephone = vendorTelephoneNumber?.join(',')||'';
@@ -49,16 +49,43 @@ vendorRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
             vendorIdentificationNumber,
             vendorPDVNumber,
             vendorCity,
-            vendorCategoryId,
             vendorTelephone: formattedTelephone, 
             vendorEmail: formattedEmail, 
             vendorTransactionNumber: formattedTransactionNumber, 
+            supportsAvans
         });
 
         return res.status(201).json(newVendor);
     } catch (error) {
         console.error("Error creating new vendor:", error);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({success: false, message: "Internal server error" });
     }
 });
+
+
+vendorRouter.delete('/', protectedRoute, async (req:Request, res: Response) =>{
+  const {vendorId} = req.body;
+
+  try{
+    if(vendorId){
+      Vendor.destroy({
+        where:{
+          vendorId : req.body.vendorId,
+        } 
+      })
+    .then(() => {
+      return res.status(200).json({sucess: true, message: "Vendor deleted successfully"});
+
+    })
+
+    .catch(() => {
+      return res.status(400).json({success: false, message : "Couldn't find vendor with that id"});
+    });
+
+  }}
+  catch(error){
+    console.error("Error while deleting new vendor:", error);
+    return res.status(500).json({success : false, message: "Internal server error"});
+  }
+})
 

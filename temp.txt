@@ -23,3 +23,5 @@ Da li avans ulazi u budzet?
 
 UDARDITI:
 Promijeniti sve controlere dodati atribute koje fale
+Ja saljem sve strane kljuceve 
+po idu oni na frontenu kupe koji je objekat

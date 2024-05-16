@@ -1,6 +1,6 @@
 import express, { Response, Request, Router } from "express";
 
-import { Categories } from "../../models/Category";
+import { Category } from "../../models/Category";
 import { protectedRoute } from "../../middleware/auth-middleware";
 import { Op } from "sequelize";
 
@@ -10,16 +10,16 @@ categoriesRouter.get("/",protectedRoute,async (req:Request,res:Response)=>{
     const {categoryId}=req.body;
     let categories;
     if(!categoryId){
-        categories=await Categories.findAll()
+        categories=await Category.findAll()
     } else {
-        categories=await Categories.findAll({
+        categories=await Category.findAll({
             where:{
                 categoryId:{[Op.startsWith]:categoryId}
             }
         })
     }
 
-    return res.send(categories)
+    return res.json(categories)
  
 })
 
@@ -27,7 +27,7 @@ categoriesRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
     const {categoryName}=req.body;
     
     try {
-        const newCategory=await Categories.create({
+        const newCategory=await Category.create({
             categoryName
         })
         return res.status(201).json(newCategory);
@@ -35,4 +35,37 @@ categoriesRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
         console.log("Error creating new category:",error)
         return res.status(500).json({message:"Internal server error"})
     }
+})
+
+categoriesRouter.delete('/', protectedRoute, async(req: Request , res: Response) =>{
+    const {categoryId} = req.body;
+    
+    try{
+        if(categoryId){
+            Category.destroy({
+                where: {
+                    categoryId : req.body.categoryId,
+                }
+            })
+            .then(() => {
+                return res
+                  .status(200)
+                  .json({ success: true, msg: "Category successfully deleted" });
+              })
+              .catch(() => {
+                return res
+                  .status(400)
+                  .json({ success: false, msg: "Category doesn't exist" });
+              });
+
+
+        }
+
+    }catch(error){
+
+        console.error("Error deleting a category", error);
+        return res.status(500).json({success: false, message: "Internal server error"});
+
+    }
+    
 })
