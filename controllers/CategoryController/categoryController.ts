@@ -9,33 +9,54 @@ export const categoriesRouter=express.Router();
 categoriesRouter.get("/",protectedRoute,async (req:Request,res:Response)=>{
     const {categoryId}=req.body;
     let categories;
-    if(!categoryId){
-        categories=await Category.findAll()
-    } else {
-        categories=await Category.findAll({
-            where:{
-                categoryId:{[Op.startsWith]:categoryId}
-            }
-        })
+    try{
+        if(!categoryId){
+            categories=await Category.findAll()
+        } else {
+            categories=await Category.findAll({
+                where:{
+                    categoryId:req.body.categoryId
+                }
+            })
+        }
+        return res.status(200).json(categories);
+
+
+    }catch(error){
+        console.error(error);
+        return res.status(500).json({message:"Internal server error"});
     }
 
-    return res.json(categories)
  
 })
 
 categoriesRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
     const {categoryName}=req.body;
+
     
     try {
-        const newCategory=await Category.create({
-            categoryName
+        const exists = await Category.findOne({
+            where :{ categoryName }
         })
-        return res.status(200).json({success:true, message:"Category created successfully"});
-    } catch (error){
-        console.log("Error creating new category:",error)
-        return res.status(500).json({message:"Internal server error"})
+
+        if(!exists){
+            await Category.create({
+                categoryName
+            })
+            return res.status(200).json({success:true, message:"Category created successfully"});
+        }else{
+
+            return res.status(409).json({success:false, message:"This category already exists"})
+
+        } 
+    }catch (error){
+            console.error(error)
+            return res.status(500).json({message:"Internal server error"})
+        }
+        
+        
     }
-})
+)
 
 categoriesRouter.delete('/', protectedRoute, async(req: Request , res: Response) =>{
     const {categoryId} = req.body;
@@ -63,7 +84,7 @@ categoriesRouter.delete('/', protectedRoute, async(req: Request , res: Response)
 
     }catch(error){
 
-        console.error("Error deleting a category", error);
+        console.error(error);
         return res.status(500).json({success: false, message: "Internal server error"});
 
     }

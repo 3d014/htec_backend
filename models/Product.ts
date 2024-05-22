@@ -21,11 +21,6 @@ export const Product = sequelize.define("Product", {
     },
     primaryKey: false,
     autoIncrement: false,    
-  },
-  description: {
-    type: DataTypes.STRING,
-    primaryKey: false,
-    autoIncrement: false,
   }
 });
 
