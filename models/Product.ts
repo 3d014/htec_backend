@@ -16,7 +16,7 @@ export const Product = sequelize.define("Product", {
   categoryId: { // foreign key
     type: DataTypes.INTEGER,
     references: {
-      model : 'Category',
+      model : 'Categories',
       key : 'categoryId',
     },
     primaryKey: false,

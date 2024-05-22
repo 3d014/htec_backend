@@ -13,7 +13,7 @@ userRouter.post("/create", async (req: Request, res: Response) => {
 
   const userAlreadyExists = await User.findOne({ where: { email } });
   if (userAlreadyExists) {
-    res.status(400).json({ success: false, msg: "User already exists" });
+    res.status(401).json({ success: false, msg: "User already exists" });
   }
 
   const salt = bcrypt.genSaltSync(10);
@@ -27,7 +27,7 @@ userRouter.post("/create", async (req: Request, res: Response) => {
     userRole: "user",
   });
 
-  res.status(201).json({ success: true, msg: "User sucessfully added" });
+  res.status(200).json({ success: true, msg: "User sucessfully created" });
 });
 
 userRouter.delete("/", async (req: Request, res: Response) => {

@@ -30,7 +30,7 @@ categoriesRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
         const newCategory=await Category.create({
             categoryName
         })
-        return res.status(201).json(newCategory);
+        return res.status(200).json({success:true, message:"Category created successfully"});
     } catch (error){
         console.log("Error creating new category:",error)
         return res.status(500).json({message:"Internal server error"})

@@ -8,7 +8,7 @@ export const CategoryBudget = sequelize.define("Category_Budget",{
         primaryKey: false, 
         autoIncrement: false,
         references: {
-            model: 'Category', 
+            model: 'Categories', 
             key: 'categoryId', 
          }
 
@@ -18,7 +18,7 @@ export const CategoryBudget = sequelize.define("Category_Budget",{
         primaryKey : false,
         autoIncrement : false,
         references: {
-            model: 'Budget', 
+            model: 'Budgets', 
             key: 'budgetId', 
         }
      }, // foreign key

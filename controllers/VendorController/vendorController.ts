@@ -54,7 +54,7 @@ vendorRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
             supportsAvans
         });
 
-        return res.status(201).json(newVendor);
+        return res.status(200).json({success:true, message:"Vendor created successfully"});
     } catch (error) {
         console.error("Error creating new vendor:", error);
         return res.status(500).json({success: false, message: "Internal server error" });
