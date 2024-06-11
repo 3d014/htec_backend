@@ -26,6 +26,8 @@ productsRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
   }
 });
 
+
+
 productsRouter.delete("/", protectedRoute, async (req: Request, res: Response) => {
   const { productId } = req.body;
   try{
@@ -56,7 +58,7 @@ productsRouter.post(
   "/",
   protectedRoute,
   async (req: Request, res: Response) => {
-    const { productName, measuringUnit, categoryId, description} = req.body;
+    const { productName, measuringUnit, categoryId} = req.body;
     try{
       const exists = await Product.findOne({
         where :{ productName }
@@ -66,7 +68,7 @@ productsRouter.post(
           productName,
           measuringUnit,
           categoryId,
-          description
+          
         });
       }else{
         return res.status(409).json({success:false, message:"This product already exists"})
@@ -82,3 +84,24 @@ productsRouter.post(
     return res.status(200).end();
   }
 );
+
+productsRouter.put("/", protectedRoute,
+    async (req: Request, res: Response) => {
+      const { productId, productName, measuringUnit, categoryId } = req.body;
+      try {
+         const prod = await Product.findOne({
+          where: {productId}
+         })
+         prod?.set({
+          productName: productName,
+          measuringUnit: measuringUnit,
+          categoryId: categoryId
+         })
+         prod?.save()
+      } catch(error){
+        console.log(error)
+      }
+      return res.status(200).end();
+    }
+ 
+  );

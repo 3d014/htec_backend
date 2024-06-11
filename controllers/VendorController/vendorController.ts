@@ -42,14 +42,14 @@ vendorRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
   
 
   vendorRouter.post("/", protectedRoute, async (req: Request, res: Response) => {
-    const { vendorName, vendorAddress, vendorIdentificationNumber,vendorPDVNumber, vendorCity, vendorTelephoneNumber, vendorEmail, vendorTransactionNumber,supportsAvans } = req.body;
+    const { vendorName, vendorAddress, vendorIdentificationNumber,vendorPDVNumber, vendorCity, vendorTelephone, vendorEmail, vendorTransactionNumber,supportsAvans } = req.body;
 
     try {
           const exists = await Vendor.findOne({
             where :{ vendorName }
         })
         if(!exists){
-          const formattedTelephone = vendorTelephoneNumber?.join(',')||'';
+          const formattedTelephone = vendorTelephone?.join(',')||'';
           const formattedEmail = vendorEmail?.join(',')||'';
           const formattedTransactionNumber = vendorTransactionNumber?.join(',')||'';
           const newVendor = await Vendor.create({
@@ -104,3 +104,37 @@ vendorRouter.delete('/', protectedRoute, async (req:Request, res: Response) =>{
   }
 })
 
+vendorRouter.put('/', protectedRoute, async (req: Request, res: Response) => {
+  const { vendorId, vendorName, vendorAddress, vendorIdentificationNumber, vendorPDVNumber, vendorCity, vendorTelephone, vendorEmail, vendorTransactionNumber, supportsAvans } = req.body;
+
+  try {
+    const vendor = await Vendor.findOne({
+      where: { vendorId }
+    });
+
+    if (vendor) {
+      const formattedTelephone = vendorTelephone?.join(',') || '';
+      const formattedEmail = vendorEmail?.join(',') || '';
+      const formattedTransactionNumber = vendorTransactionNumber?.join(',') || '';
+
+      await vendor.update({
+        vendorName,
+        vendorAddress,
+        vendorIdentificationNumber,
+        vendorPDVNumber,
+        vendorCity,
+        vendorTelephone: formattedTelephone,
+        vendorEmail: formattedEmail,
+        vendorTransactionNumber: formattedTransactionNumber,
+        supportsAvans
+      });
+
+      return res.status(200).json({ success: true, message: "Vendor updated successfully" });
+    } else {
+      return res.status(404).json({ success: false, message: "Vendor not found" });
+    }
+  } catch (error) {
+    console.error("Error updating vendor:", error);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
