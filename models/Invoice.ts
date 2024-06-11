@@ -11,6 +11,12 @@ export const Invoice = sequelize.define("Invoice",{
         autoIncrement: false,
       },
 
+      invoiceNumber:{
+        type:DataTypes.STRING,
+        primaryKey:false,
+        autoIncrement:false
+      },
+
       dateOfIssue:{
         type:DataTypes.DATE,
         primaryKey:false,

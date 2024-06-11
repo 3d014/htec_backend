@@ -57,6 +57,22 @@ categoriesRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
         
     }
 )
+categoriesRouter.put("/", protectedRoute, async (req: Request, res: Response) => {
+    const { categoryId, categoryName } = req.body;
+    try {
+       const category = await Category.findOne({
+        where: {categoryId}
+       })
+       category?.update({
+        categoryName: categoryName
+       })
+       category?.save()
+    } catch(error){
+      console.log(error)
+    }
+    return res.status(200).end();
+  }
+);
 
 categoriesRouter.delete('/', protectedRoute, async(req: Request , res: Response) =>{
     const {categoryId} = req.body;
