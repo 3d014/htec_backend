@@ -75,7 +75,7 @@ invoiceRouter.delete("/", protectedRoute, (req: Request, res: Response) => {
 
 
 invoiceRouter.post("/",protectedRoute, async (req: Request, res: Response) => {
-      const { vendorId, dateOfIssue,dateOfPayment, TotalValueWithoutPdv, TotalValueWithPdv, pdvValue, invoiceItems,invoiceId } = req.body;
+      const { vendorId, dateOfIssue,dateOfPayment, totalValueWithoutPdv, totalValueWithPdv, pdvValue, invoiceItems,invoiceId } = req.body;
       try{
         
         await Invoice.create({
@@ -83,8 +83,8 @@ invoiceRouter.post("/",protectedRoute, async (req: Request, res: Response) => {
             vendorId,
             dateOfIssue,
             dateOfPayment,
-            totalValueWithoutPdv:TotalValueWithoutPdv,
-            totalValueWithPdv:TotalValueWithPdv,
+            totalValueWithoutPdv:totalValueWithoutPdv,
+            totalValueWithPdv:totalValueWithPdv,
             pdvValue
             });
         

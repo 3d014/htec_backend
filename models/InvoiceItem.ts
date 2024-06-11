@@ -13,29 +13,29 @@ export const InvoiceItem = sequelize.define("InvoiceItem",{
         autoIncrement: false,
       },
       priceWithoutPdv: {
-        type: DataTypes.DECIMAL,
+        type: DataTypes.DECIMAL(10,3),
         primaryKey: false,
         autoIncrement: false,
       },
       priceWithPdv: {
-        type: DataTypes.DECIMAL,
+        type: DataTypes.DECIMAL(10,3),
         primaryKey: false,
         autoIncrement: false,
       },
 
       sumWithoutPdv: {
-        type: DataTypes.DECIMAL,
+        type: DataTypes.DECIMAL(10,3),
         primaryKey: false,
         autoIncrement: false,
       },
       sumWithPdv: {
-        type: DataTypes.DECIMAL,
+        type: DataTypes.DECIMAL(10,3),
         primaryKey: false,
         autoIncrement: false,
       },
 
       discount: {
-        type: DataTypes.DECIMAL,
+        type: DataTypes.DECIMAL(10,3),
         primaryKey: false,
         autoIncrement: false,
       },

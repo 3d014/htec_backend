@@ -23,17 +23,17 @@ export const Invoice = sequelize.define("Invoice",{
       },
       
       totalValueWithoutPdv:{
-        type:DataTypes.DECIMAL,
+        type:DataTypes.DECIMAL(10,3),
         primaryKey:false,
         autoIncrement:false
       },
       totalValueWithPdv:{
-        type:DataTypes.DECIMAL,
+        type:DataTypes.DECIMAL(10,3),
         primaryKey:false,
         autoIncrement:false
       },
       pdvValue:{
-        type:DataTypes.DECIMAL,
+        type:DataTypes.DECIMAL(10,3),
         primaryKey:false,
         autoIncrement:false
       }
