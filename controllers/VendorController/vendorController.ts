@@ -87,7 +87,7 @@ vendorRouter.delete('/', protectedRoute, async (req:Request, res: Response) =>{
     })
 
     if(vendorUsed){
-      return res.status(409).json({success:false, message:"Vendor can't be deleted"})
+      return res.status(409).json({success:false, message:"Vendor couldn't be deleted because it is already used in invoice"})
 
     }
 

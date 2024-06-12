@@ -23,7 +23,7 @@ app.use("/api/budget", budgetRouter);
 app.use("/api/invoices",invoiceRouter);
 app.use("/api/categories",categoriesRouter);
 (async () => {
-  await sequelize.sync({ force: false });
+  await sequelize.sync({ force: true });
   app.listen(5000, () => {
     console.log("App listening on port 5000");
   });

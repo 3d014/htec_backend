@@ -37,7 +37,7 @@ productsRouter.delete("/", protectedRoute, async (req: Request, res: Response) =
       where: {productId}
     })
     if(productUsed){
-      return res.status(409).json({success:false, message:"Product can't be deleted"})
+      return res.status(409).json({success:false, message:"Product couldn't be deleted because it is being used in invoice"})
 
     }
     else if(productId) {
