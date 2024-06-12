@@ -2,7 +2,6 @@ import express, { Response, Request, Router } from "express";
 import { Invoice } from "../../models/Invoice";
 import { InvoiceItem } from "../../models/InvoiceItem";
 import { protectedRoute } from "../../middleware/auth-middleware";
-import { v4 } from 'uuid';
 
 
 export const invoiceRouter: Router = express.Router();

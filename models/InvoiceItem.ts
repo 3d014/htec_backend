@@ -43,6 +43,10 @@ export const InvoiceItem = sequelize.define("InvoiceItem",{
         type: DataTypes.INTEGER,
         primaryKey: false,
         autoIncrement: false,
+        references: {
+          model: 'Products', 
+          key: 'productId', 
+      }
       },
       productCode:{
         type:DataTypes.STRING,

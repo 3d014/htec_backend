@@ -1,13 +1,17 @@
 import express, { Response, Request, Router } from "express";
 import { Product } from "../../models/Product";
 import { protectedRoute } from "../../middleware/auth-middleware";
-import { Op } from "sequelize";
-
+import { InvoiceItem } from "../../models/InvoiceItem";
 export const productsRouter: Router = express.Router();
+
 productsRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
   const { productId } = req.body;
   let products;
+
   try{
+   
+
+    
     if (!productId) {
       products = await Product.findAll();
     } else {
@@ -26,14 +30,19 @@ productsRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
   }
 });
 
-
-
 productsRouter.delete("/", protectedRoute, async (req: Request, res: Response) => {
   const { productId } = req.body;
   try{
-    if (productId) {
+    const productUsed = await InvoiceItem.findOne({
+      where: {productId}
+    })
+    if(productUsed){
+      return res.status(409).json({success:false, message:"Product can't be deleted"})
+
+    }
+    else if(productId) {
       await Product.destroy({
-        where: {
+        where: { 
           productId : req.body.productId,
         },
       })
@@ -58,7 +67,7 @@ productsRouter.post(
   "/",
   protectedRoute,
   async (req: Request, res: Response) => {
-    const { productName, measuringUnit, categoryId} = req.body;
+    const { productName, measuringUnit, categoryId, description} = req.body;
     try{
       const exists = await Product.findOne({
         where :{ productName }
@@ -68,7 +77,7 @@ productsRouter.post(
           productName,
           measuringUnit,
           categoryId,
-          
+          description
         });
       }else{
         return res.status(409).json({success:false, message:"This product already exists"})
@@ -85,14 +94,14 @@ productsRouter.post(
   }
 );
 
-productsRouter.put("/", protectedRoute,
-    async (req: Request, res: Response) => {
+
+productsRouter.put("/", protectedRoute, async (req: Request, res: Response) => {
       const { productId, productName, measuringUnit, categoryId } = req.body;
       try {
          const prod = await Product.findOne({
           where: {productId}
          })
-         prod?.set({
+         prod?.update({
           productName: productName,
           measuringUnit: measuringUnit,
           categoryId: categoryId
@@ -105,3 +114,5 @@ productsRouter.put("/", protectedRoute,
     }
  
   );
+
+

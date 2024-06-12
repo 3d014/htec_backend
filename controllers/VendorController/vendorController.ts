@@ -1,7 +1,7 @@
 import express, { Response, Request, Router } from "express";
 import { Vendor } from "../../models/Vendor";
 import { protectedRoute } from "../../middleware/auth-middleware";
-import { Op } from "sequelize";
+import { Invoice } from "../../models/Invoice";
 
 
 export const vendorRouter: Router = express.Router();
@@ -82,6 +82,15 @@ vendorRouter.delete('/', protectedRoute, async (req:Request, res: Response) =>{
   const {vendorId} = req.body;
 
   try{
+    const vendorUsed = await Invoice.findOne({
+      where: {vendorId}
+    })
+
+    if(vendorUsed){
+      return res.status(409).json({success:false, message:"Vendor can't be deleted"})
+
+    }
+
     if(vendorId){
       await Vendor.destroy({
         where:{
