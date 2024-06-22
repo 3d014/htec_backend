@@ -42,7 +42,7 @@ authRouter.post("/login", async (req: Request, res: Response) => {
       },
       process.env.JWT_SECRET_KEY as string,
       {
-        expiresIn: "1h",
+        expiresIn: "6h",
       }
     );
 
