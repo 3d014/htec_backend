@@ -10,4 +10,3 @@ export const Category = sequelize.define("Category",{
     }
 })
 
-// Category is synchronoized with latest ER Model

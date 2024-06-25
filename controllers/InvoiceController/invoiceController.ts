@@ -3,43 +3,13 @@ import { Invoice } from "../../models/Invoice";
 import { InvoiceItem } from "../../models/InvoiceItem";
 import { protectedRoute } from "../../middleware/auth-middleware";
 import { Product } from "../../models/Product";
+import ProductInstance from "../../interfaces/Product";
+import { InvoiceInstance, InvoiceItemInstance } from "../../interfaces/Invoice";
+import updateBudget, { createNewBudget } from "../../db/utils/updateBudget";
+import dayjs from "dayjs";
+import { Budget } from "../../models/Budget";
 
-interface ProductSum{
-    productId:number,
-    productName:string,
-    productSum:number
 
-}
-
-interface InvoiceInterface {
-    invoiceId: string;
-    vendorId: number;
-    invoiceNumber: string;
-    dateOfIssue: Date;
-    dateOfPayment: Date;
-    totalValueWithoutPdv: number;
-    totalValueWithPdv: number;
-    pdvValue: number;
-  }
-
-  interface InvoiceItemInterface {
-    invoiceItemId: string;
-    invoiceId: string;
-    quantity: number;
-    priceWithoutPdv: number;
-    priceWithPdv: number;
-    sumWithoutPdv: number;
-    sumWithPdv: number;
-    discount: number;
-    productId: number;
-    productCode: string;
-  }
-  interface ProductInterface {
-    productId: number;
-    productName: string;
-    measuringUnit: string;
-    categoryId: number; // foreign key to Categories
-  }
 export const invoiceRouter: Router = express.Router();
 invoiceRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
     const { invoiceId } = req.body;
@@ -82,9 +52,9 @@ invoiceRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
   
 invoiceRouter.get("/invoice/productSum",async(req:Request,res:Response)=>{
      try {
-        const invoiceItems = await InvoiceItem.findAll() as unknown as InvoiceItemInterface[];
-        const invoices = await Invoice.findAll() as unknown as InvoiceInterface[];
-        const products= await Product.findAll() as unknown as ProductInterface[]
+        const invoiceItems = await InvoiceItem.findAll() as unknown as InvoiceItemInstance[];
+        const invoices = await Invoice.findAll() as unknown as InvoiceInstance[];
+        const products= await Product.findAll() as unknown as ProductInstance[]
 
         const productSumMap: { [key: number]: { productName: string, productSum: number } } = {};
 
@@ -146,6 +116,11 @@ invoiceRouter.delete("/", protectedRoute, (req: Request, res: Response) => {
 invoiceRouter.post("/",protectedRoute, async (req: Request, res: Response) => {
       const { vendorId, dateOfIssue,dateOfPayment, totalValueWithoutPdv,invoiceNumber, totalValueWithPdv, pdvValue, invoiceItems,invoiceId } = req.body;
       try{
+        const budget= await Budget.findOne({
+            where:{ month:dayjs(dateOfIssue as Date).format('MMMM'),
+            year:dayjs(dateOfIssue as Date).format('YYYY')}}
+        )
+        if(!budget) await createNewBudget(dateOfIssue,totalValueWithPdv)
         
         await Invoice.create({
             invoiceId,
@@ -165,7 +140,7 @@ invoiceRouter.post("/",protectedRoute, async (req: Request, res: Response) => {
                     
                 })             
             }
-    
+            await updateBudget(dateOfIssue)
         return res.status(200).json({success:true, message : "Invoice successfully created"});
     }catch(error){
         console.error(error);
