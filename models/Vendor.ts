@@ -3,7 +3,7 @@ import { sequelize } from "../db/SequalizeSetup";
 
 
 export const Vendor = sequelize.define("Vendor",{
-    vendorId: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    vendorId: { type: DataTypes.STRING, primaryKey: true, autoIncrement: false },
     vendorName: {
         type: DataTypes.STRING,
         primaryKey: false,

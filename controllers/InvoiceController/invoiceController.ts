@@ -8,6 +8,7 @@ import { InvoiceInstance, InvoiceItemInstance } from "../../interfaces/Invoice";
 import updateBudget, { createNewBudget } from "../../db/utils/updateBudget";
 import dayjs from "dayjs";
 import { Budget } from "../../models/Budget";
+import calculateBudget from "../../db/utils/calculateBudget";
 
 
 export const invoiceRouter: Router = express.Router();
@@ -56,7 +57,7 @@ invoiceRouter.get("/invoice/productSum",async(req:Request,res:Response)=>{
         const invoices = await Invoice.findAll() as unknown as InvoiceInstance[];
         const products= await Product.findAll() as unknown as ProductInstance[]
 
-        const productSumMap: { [key: number]: { productName: string, productSum: number } } = {};
+        const productSumMap: { [key: string]: { productName: string, productSum: number } } = {};
 
     invoiceItems.forEach(item => {
       if (invoices.some(invoice => invoice.invoiceId == item.invoiceId)) {
@@ -116,11 +117,11 @@ invoiceRouter.delete("/", protectedRoute, (req: Request, res: Response) => {
 invoiceRouter.post("/",protectedRoute, async (req: Request, res: Response) => {
       const { vendorId, dateOfIssue,dateOfPayment, totalValueWithoutPdv,invoiceNumber, totalValueWithPdv, pdvValue, invoiceItems,invoiceId } = req.body;
       try{
-        const budget= await Budget.findOne({
-            where:{ month:dayjs(dateOfIssue as Date).format('MMMM'),
-            year:dayjs(dateOfIssue as Date).format('YYYY')}}
-        )
-        if(!budget) await createNewBudget(dateOfIssue,totalValueWithPdv)
+        // const budget= await Budget.findOne({
+        //     where:{ month:dayjs(dateOfIssue as Date).format('MMMM'),
+        //     year:dayjs(dateOfIssue as Date).format('YYYY')}}
+        // )
+        // if(!budget) await createNewBudget(dateOfIssue,totalValueWithPdv)
         
         await Invoice.create({
             invoiceId,
@@ -140,7 +141,8 @@ invoiceRouter.post("/",protectedRoute, async (req: Request, res: Response) => {
                     
                 })             
             }
-            await updateBudget(dateOfIssue)
+            calculateBudget(dateOfIssue,totalValueWithPdv)
+            
         return res.status(200).json({success:true, message : "Invoice successfully created"});
     }catch(error){
         console.error(error);

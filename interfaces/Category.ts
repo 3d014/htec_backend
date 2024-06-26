@@ -1,5 +1,5 @@
 interface CategoryInstance{
-    categoryId: number
+    categoryId: string,
     categoryName: string
         
     }

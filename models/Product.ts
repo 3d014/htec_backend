@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "../db/SequalizeSetup";
 
 export const Product = sequelize.define("Product", {
-  productId: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  productId: { type: DataTypes.STRING, primaryKey: true, autoIncrement: false },
   productName: {
     type: DataTypes.STRING,
     primaryKey: false,
@@ -14,11 +14,7 @@ export const Product = sequelize.define("Product", {
     autoIncrement: false,
   },
   categoryId: { // foreign key
-    type: DataTypes.INTEGER,
-    references: {
-      model : 'Categories',
-      key : 'categoryId',
-    },
+    type: DataTypes.STRING,
     primaryKey: false,
     autoIncrement: false,    
   }

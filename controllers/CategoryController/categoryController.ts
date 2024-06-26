@@ -3,6 +3,7 @@ import express, { Response, Request, Router } from "express";
 import { Category } from "../../models/Category";
 import { protectedRoute } from "../../middleware/auth-middleware";
 import { Op } from "sequelize";
+import { v4 as uuidv4 } from "uuid";
 
 export const categoriesRouter=express.Router();
 
@@ -33,7 +34,7 @@ categoriesRouter.get("/",protectedRoute,async (req:Request,res:Response)=>{
 categoriesRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
     const {categoryName}=req.body;
 
-    
+    const categoryId=uuidv4()
     try {
         const exists = await Category.findOne({
             where :{ categoryName }
@@ -41,7 +42,7 @@ categoriesRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
 
         if(!exists){
             await Category.create({
-                categoryName
+                categoryName,categoryId
             })
             return res.status(200).json({success:true, message:"Category created successfully"});
         }else{

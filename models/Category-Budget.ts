@@ -4,7 +4,7 @@ import { sequelize } from "../db/SequalizeSetup";
 export const CategoryBudget = sequelize.define("Category_Budget",{
     categoryBudgetId:{type: DataTypes.STRING, primaryKey : true, autoIncrement : false},
     categoryId: {
-        type: DataTypes.INTEGER, 
+        type: DataTypes.STRING, 
         primaryKey: false, 
         autoIncrement: false,
        
@@ -16,5 +16,5 @@ export const CategoryBudget = sequelize.define("Category_Budget",{
         autoIncrement : false,
        
      }, // foreign key
-    percentage : {type : DataTypes.DECIMAL(5,3), primaryKey : false, autoIncrement : false},
+    percentage : {type : DataTypes.DECIMAL(6,3), primaryKey : false, autoIncrement : false},
 })

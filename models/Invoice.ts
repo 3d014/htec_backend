@@ -6,7 +6,7 @@ export const Invoice = sequelize.define("Invoice",{
     invoiceId: { type: DataTypes.STRING, primaryKey: true },
 
     vendorId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: false,
         autoIncrement: false,
       },

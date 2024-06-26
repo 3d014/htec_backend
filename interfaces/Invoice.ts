@@ -1,5 +1,5 @@
 export interface ProductSum{
-    productId:number,
+    productId:string,
     productName:string,
     productSum:number
 
@@ -7,7 +7,7 @@ export interface ProductSum{
 
 export interface InvoiceInstance {
     invoiceId: string;
-    vendorId: number;
+    vendorId: string;
     invoiceNumber: string;
     dateOfIssue: Date;
     dateOfPayment: Date;
@@ -25,7 +25,7 @@ export interface InvoiceInstance {
     sumWithoutPdv: number;
     sumWithPdv: number;
     discount: number;
-    productId: number;
+    productId: string;
     productCode: string;
   }
   

@@ -1,8 +1,8 @@
 interface ProductInstance {
-    productId: number;
+    productId: string;
     productName: string;
     measuringUnit: string;
-    categoryId: number; // foreign key to Categories
+    categoryId: string; // foreign key to Categories
   }
 
   export default ProductInstance

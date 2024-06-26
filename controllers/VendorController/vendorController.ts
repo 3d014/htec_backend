@@ -2,7 +2,7 @@ import express, { Response, Request, Router } from "express";
 import { Vendor } from "../../models/Vendor";
 import { protectedRoute } from "../../middleware/auth-middleware";
 import { Invoice } from "../../models/Invoice";
-
+import { v4 as uuidv4 } from "uuid";
 
 export const vendorRouter: Router = express.Router();
 
@@ -52,7 +52,9 @@ vendorRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
           const formattedTelephone = vendorTelephone?.join(',')||'';
           const formattedEmail = vendorEmail?.join(',')||'';
           const formattedTransactionNumber = vendorTransactionNumber?.join(',')||'';
+          const vendorId=uuidv4()
           const newVendor = await Vendor.create({
+            vendorId,
               vendorName,
               vendorAddress,
               vendorIdentificationNumber,

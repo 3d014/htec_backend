@@ -2,6 +2,6 @@ interface CategoryBudgetInstance{
     categoryBudgetId:string,
     budgetId:string,
     percantage:number,
-    categoryId:number
+    categoryId:string
 }
 export default CategoryBudgetInstance

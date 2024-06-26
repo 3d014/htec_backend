@@ -2,6 +2,7 @@ import express, { Response, Request, Router } from "express";
 import { Product } from "../../models/Product";
 import { protectedRoute } from "../../middleware/auth-middleware";
 import { InvoiceItem } from "../../models/InvoiceItem";
+import { v4 as uuidv4 } from "uuid";
 export const productsRouter: Router = express.Router();
 
 productsRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
@@ -68,12 +69,14 @@ productsRouter.post(
   protectedRoute,
   async (req: Request, res: Response) => {
     const { productName, measuringUnit, categoryId, description} = req.body;
+    const productId=uuidv4()
     try{
       const exists = await Product.findOne({
         where :{ productName }
       })
       if(!exists){
         await Product.create({
+          productId,
           productName,
           measuringUnit,
           categoryId,
