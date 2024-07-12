@@ -1,0 +1,266 @@
+{
+    "extension": "linecounter",
+    "version": "0.2.7",
+    "workspace": "c:\\Users\\edin_\\Desktop\\projekatHtec\\htec_backend\\backend",
+    "linecount": [
+        {
+            "version": "0.2.7",
+            "counttime": "2024-06-07 00:36:48",
+            "filesum": 37,
+            "codesum": 12274,
+            "commentsum": 126,
+            "blanksum": 179,
+            "statistics": {
+                ".md": {
+                    "code": 13,
+                    "comment": 0,
+                    "blank": 13
+                },
+                ".json": {
+                    "code": 11356,
+                    "comment": 91,
+                    "blank": 10
+                },
+                ".ts": {
+                    "code": 882,
+                    "comment": 33,
+                    "blank": 152
+                },
+                ".mjs": {
+                    "code": 14,
+                    "comment": 1,
+                    "blank": 3
+                },
+                "": {
+                    "code": 9,
+                    "comment": 1,
+                    "blank": 1
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 1,
+                    "filename": ".env"
+                },
+                {
+                    "blank": 1,
+                    "code": 3,
+                    "comment": 0,
+                    "filename": ".gitignore"
+                },
+                {
+                    "blank": 2,
+                    "code": 28,
+                    "comment": 0,
+                    "filename": "app.ts"
+                },
+                {
+                    "blank": 9,
+                    "code": 68,
+                    "comment": 0,
+                    "filename": "controllers\\authController.ts"
+                },
+                {
+                    "blank": 15,
+                    "code": 26,
+                    "comment": 1,
+                    "filename": "controllers\\BudgetController\\budgetController.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0,
+                    "filename": "controllers\\BudgetController\\routes.ts"
+                },
+                {
+                    "blank": 23,
+                    "code": 69,
+                    "comment": 0,
+                    "filename": "controllers\\CategoryController\\categoryController.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 2,
+                    "comment": 0,
+                    "filename": "controllers\\CategoryController\\routes.ts"
+                },
+                {
+                    "blank": 15,
+                    "code": 76,
+                    "comment": 0,
+                    "filename": "controllers\\InvoiceController\\invoiceController.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 2,
+                    "comment": 0,
+                    "filename": "controllers\\InvoiceController\\routes.ts"
+                },
+                {
+                    "blank": 14,
+                    "code": 93,
+                    "comment": 0,
+                    "filename": "controllers\\ProductController\\productController.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 2,
+                    "comment": 0,
+                    "filename": "controllers\\ProductController\\routes.ts"
+                },
+                {
+                    "blank": 6,
+                    "code": 94,
+                    "comment": 0,
+                    "filename": "controllers\\resetPasswordController.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 2,
+                    "comment": 0,
+                    "filename": "controllers\\UserController\\routes.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 32,
+                    "comment": 11,
+                    "filename": "controllers\\UserController\\userController.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 2,
+                    "comment": 0,
+                    "filename": "controllers\\VendorController\\routes.ts"
+                },
+                {
+                    "blank": 26,
+                    "code": 114,
+                    "comment": 0,
+                    "filename": "controllers\\VendorController\\vendorController.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 5,
+                    "comment": 0,
+                    "filename": "db\\SequalizeSetup.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 14,
+                    "comment": 1,
+                    "filename": "eslint.config.mjs"
+                },
+                {
+                    "blank": 0,
+                    "code": 10,
+                    "comment": 0,
+                    "filename": "interfaces\\Request.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "interfaces\\User.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 25,
+                    "comment": 0,
+                    "filename": "middleware\\auth-middleware.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 9,
+                    "comment": 0,
+                    "filename": "models\\Budget.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 24,
+                    "comment": 2,
+                    "filename": "models\\Category-Budget.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 10,
+                    "comment": 1,
+                    "filename": "models\\Category.ts"
+                },
+                {
+                    "blank": 7,
+                    "code": 35,
+                    "comment": 0,
+                    "filename": "models\\Invoice.ts"
+                },
+                {
+                    "blank": 6,
+                    "code": 43,
+                    "comment": 0,
+                    "filename": "models\\InvoiceItem.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 24,
+                    "comment": 2,
+                    "filename": "models\\Product.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 5,
+                    "comment": 1,
+                    "filename": "models\\TokenBlacklist.ts"
+                },
+                {
+                    "blank": 4,
+                    "code": 21,
+                    "comment": 2,
+                    "filename": "models\\User.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 50,
+                    "comment": 1,
+                    "filename": "models\\Vendor.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 9,
+                    "comment": 0,
+                    "filename": "notes.md"
+                },
+                {
+                    "blank": 2,
+                    "code": 11298,
+                    "comment": 0,
+                    "filename": "package-lock.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 48,
+                    "comment": 0,
+                    "filename": "package.json"
+                },
+                {
+                    "blank": 5,
+                    "code": 4,
+                    "comment": 0,
+                    "filename": "readme.md"
+                },
+                {
+                    "blank": 2,
+                    "code": 0,
+                    "comment": 12,
+                    "filename": "routes\\authRoutes.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 10,
+                    "comment": 91,
+                    "filename": "tsconfig.json"
+                }
+            ]
+        }
+    ]
+}

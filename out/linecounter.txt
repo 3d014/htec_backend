@@ -1,0 +1,58 @@
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2024-06-07 00:36:48
+count workspace : c:\Users\edin_\Desktop\projekatHtec\htec_backend\backend
+total files : 37
+total code lines : 12274
+total comment lines : 126
+total blank lines : 179
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |            .md|             13|              0|             13|   0.11|
+   |          .json|          11356|             91|             10|     93|
+   |            .ts|            882|             33|            152|    7.2|
+   |           .mjs|             14|              1|              3|   0.11|
+   |               |              9|              1|              1|  0.073|
+   -------------------------------------------------------------------------
+.env, code is 6, comment is 1, blank is 0.
+.gitignore, code is 3, comment is 0, blank is 1.
+app.ts, code is 28, comment is 0, blank is 2.
+controllers\authController.ts, code is 68, comment is 0, blank is 9.
+controllers\BudgetController\budgetController.ts, code is 26, comment is 1, blank is 15.
+controllers\BudgetController\routes.ts, code is 0, comment is 0, blank is 0.
+controllers\CategoryController\categoryController.ts, code is 69, comment is 0, blank is 23.
+controllers\CategoryController\routes.ts, code is 2, comment is 0, blank is 0.
+controllers\InvoiceController\invoiceController.ts, code is 76, comment is 0, blank is 15.
+controllers\InvoiceController\routes.ts, code is 2, comment is 0, blank is 0.
+controllers\ProductController\productController.ts, code is 93, comment is 0, blank is 14.
+controllers\ProductController\routes.ts, code is 2, comment is 0, blank is 0.
+controllers\resetPasswordController.ts, code is 94, comment is 0, blank is 6.
+controllers\UserController\routes.ts, code is 2, comment is 0, blank is 0.
+controllers\UserController\userController.ts, code is 32, comment is 11, blank is 5.
+controllers\VendorController\routes.ts, code is 2, comment is 0, blank is 0.
+controllers\VendorController\vendorController.ts, code is 114, comment is 0, blank is 26.
+db\SequalizeSetup.ts, code is 5, comment is 0, blank is 1.
+eslint.config.mjs, code is 14, comment is 1, blank is 3.
+interfaces\Request.ts, code is 10, comment is 0, blank is 0.
+interfaces\User.ts, code is 11, comment is 0, blank is 0.
+middleware\auth-middleware.ts, code is 25, comment is 0, blank is 2.
+models\Budget.ts, code is 9, comment is 0, blank is 1.
+models\Category-Budget.ts, code is 24, comment is 2, blank is 2.
+models\Category.ts, code is 10, comment is 1, blank is 2.
+models\Invoice.ts, code is 35, comment is 0, blank is 7.
+models\InvoiceItem.ts, code is 43, comment is 0, blank is 6.
+models\Product.ts, code is 24, comment is 2, blank is 2.
+models\TokenBlacklist.ts, code is 5, comment is 1, blank is 3.
+models\User.ts, code is 21, comment is 2, blank is 4.
+models\Vendor.ts, code is 50, comment is 1, blank is 5.
+notes.md, code is 9, comment is 0, blank is 8.
+package-lock.json, code is 11298, comment is 0, blank is 2.
+package.json, code is 48, comment is 0, blank is 0.
+readme.md, code is 4, comment is 0, blank is 5.
+routes\authRoutes.ts, code is 0, comment is 12, blank is 2.
+tsconfig.json, code is 10, comment is 91, blank is 8.
+===============================================================================

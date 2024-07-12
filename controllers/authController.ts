@@ -15,37 +15,43 @@ export const authRouter: Router = express.Router();
 
 authRouter.post("/login", async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  const user: Model<UserType> | null = await User.findOne({
-    where: { email },
-  });
+  try{
+    const user: Model<UserType> | null = await User.findOne({
+      where: { email },
+    });
 
-  if (!user) {
-    return res
-      .status(401)
-      .json({ success: false, msg: "Incorrect password or email" });
-  }
-  const auth = await bcrypt.compare(password, user.dataValues.pw);
-  if (!auth) {
-    return res
-      .status(401)
-      .json({ success: false, msg: "Incorrect password or email" });
-  }
-  console.log("test", user.dataValues);
-
-  const token = jwt.sign(
-    {
-      firstName: user.dataValues.firstName,
-      lastName: user.dataValues.lastName,
-      email: user.dataValues.email,
-      roles: [user.dataValues.userRole],
-    },
-    process.env.JWT_SECRET_KEY as string,
-    {
-      expiresIn: "1h",
+    if (!user) {
+      return res
+        .status(401)
+        .json({ success: false, msg: "Incorrect password or email" });
     }
-  );
+    const auth = await bcrypt.compare(password, user.dataValues.pw);
+    if (!auth) {
+      return res
+        .status(401)
+        .json({ success: false, msg: "Incorrect password or email" });
+    }
+    console.log("test", user.dataValues);
 
-  return res.status(200).json({ success: true, token });
+    const token = jwt.sign(
+      {
+        firstName: user.dataValues.firstName,
+        lastName: user.dataValues.lastName,
+        email: user.dataValues.email,
+        roles: [user.dataValues.userRole],
+      },
+      process.env.JWT_SECRET_KEY as string,
+      {
+        expiresIn: "3h",
+      }
+    );
+
+    return res.status(200).json({ success: true, token });
+    }catch(error){
+      console.error(error)
+      return res.status(500).json({message:"Internal server error"})
+
+    }
 });
 
 authRouter.post("/logout", (req: Request, res: Response) => {
