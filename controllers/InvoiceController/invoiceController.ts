@@ -1,15 +1,17 @@
-import express, { Response, Request, Router } from "express";
+import express, { Response, Request, Router, response } from "express";
 import { Invoice } from "../../models/Invoice";
 import { InvoiceItem } from "../../models/InvoiceItem";
 import { protectedRoute } from "../../middleware/auth-middleware";
 import { Product } from "../../models/Product";
 import ProductInstance from "../../interfaces/Product";
 import { InvoiceInstance, InvoiceItemInstance } from "../../interfaces/Invoice";
-import updateBudget, { createNewBudget } from "../../db/utils/updateBudget";
-import dayjs from "dayjs";
-import { Budget } from "../../models/Budget";
+
 import calculateBudget from "../../db/utils/calculateBudget";
 
+import multer from 'multer'
+
+
+const upload=multer()
 
 export const invoiceRouter: Router = express.Router();
 invoiceRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
@@ -113,15 +115,21 @@ invoiceRouter.delete("/", protectedRoute, (req: Request, res: Response) => {
     }
   });
 
+  invoiceRouter.post('/uploadInvoice',protectedRoute,upload.single('file'),async(req:Request,res:Response)=>{
+    try{
+        const {formData}=req.body
+    console.log(req.body)
+    console.log(req.file)
+    return res.status(200).json({ message: 'File uploaded successfully' });
+    } catch (error){
+        console.error('Error handling file upload:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+  })
 
 invoiceRouter.post("/",protectedRoute, async (req: Request, res: Response) => {
       const { vendorId, dateOfIssue,dateOfPayment, totalValueWithoutPdv,invoiceNumber, totalValueWithPdv, pdvValue, invoiceItems,invoiceId } = req.body;
       try{
-        // const budget= await Budget.findOne({
-        //     where:{ month:dayjs(dateOfIssue as Date).format('MMMM'),
-        //     year:dayjs(dateOfIssue as Date).format('YYYY')}}
-        // )
-        // if(!budget) await createNewBudget(dateOfIssue,totalValueWithPdv)
         
         await Invoice.create({
             invoiceId,
