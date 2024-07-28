@@ -8,7 +8,7 @@ export const Product = sequelize.define("Product", {
     primaryKey: false,
     autoIncrement: false,
   },
-  measuringUnit: {
+  measuringUnitId: {
     type: DataTypes.STRING,
     primaryKey: false,
     autoIncrement: false,

@@ -3,3 +3,6 @@ isto i za vendore
 
 dodat put metode
 
+treba na backen poslat mjesec i godinu a ja cu proc kroz fakture sa tim mjesecom i onda podijelit sad sve po vendorima
+api za mesauring unitse, napraviti novi model itd.
+ukoliko se mjerna jedinica koristi za enki proizvnod ne smije biti izbrisana
