@@ -1,5 +1,6 @@
 import express, { Response, Request, Router } from "express";
 import { Product } from "../../models/Product";
+import { MeasuringUnit } from "../../models/MeasuringUnit";
 import { protectedRoute } from "../../middleware/auth-middleware";
 import { InvoiceItem } from "../../models/InvoiceItem";
 import { v4 as uuidv4 } from "uuid";
@@ -72,11 +73,28 @@ productsRouter.post(
   async (req: Request, res: Response) => {
     const { productName, measuringUnit, categoryId, description} = req.body;
     const productId=uuidv4()
+    
+    
     try{
-      const exists = await Product.findOne({
+      const productExists = await Product.findOne({
         where :{ productName }
       })
-      if(!exists){
+      const measuringUnitExists = await MeasuringUnit.findAll({
+        where: {measuringUnitName : measuringUnit.toLowerCase()}
+      });
+
+      if(!measuringUnitExists){
+        const measuringUnitId = uuidv4();
+        const measuringUnitName = measuringUnit;
+        await MeasuringUnit.create({
+          measuringUnitId,
+          measuringUnitName
+        })
+
+          
+      }
+
+      if(!productExists){
         await Product.create({
           productId,
           productName,
@@ -84,6 +102,7 @@ productsRouter.post(
           categoryId,
           description
         });
+        
       }else{
         return res.status(409).json({success:false, message:"This product already exists"})
 

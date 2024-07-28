@@ -37,12 +37,12 @@ measuringUnitRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
     const measuringUnitId=uuidv4()
     try {
         const exists = await MeasuringUnit.findOne({
-            where :{ measuringUnitName }
+            where :{ measuringUnitName : req.body.measuringUnitName.toLowerCase()}
         })
 
         if(!exists){
             await MeasuringUnit.create({
-                measuringUnitName,measuringUnitId
+                measuringUnitId,abbreviation,measuringUnitName
             })
             return res.status(200).json({success:true, message:"Measuring unit added successfully"});
         }else{
