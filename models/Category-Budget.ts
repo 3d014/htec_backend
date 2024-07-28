@@ -16,5 +16,5 @@ export const CategoryBudget = sequelize.define("Category_Budget",{
         autoIncrement : false,
        
      }, // foreign key
-    percentage : {type : DataTypes.DECIMAL(6,3), primaryKey : false, autoIncrement : false},
+    value : {type : DataTypes.DECIMAL(6,3), primaryKey : false, autoIncrement : false},
 })

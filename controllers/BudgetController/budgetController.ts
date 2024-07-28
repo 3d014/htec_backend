@@ -1,7 +1,6 @@
 import express, { Response, Request, Router } from "express";
 import { Budget } from "../../models/Budget";
 import { protectedRoute } from "../../middleware/auth-middleware";
-import { Op } from "sequelize";
 import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 import { CategoryBudget } from "../../models/Category-Budget";

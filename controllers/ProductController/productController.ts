@@ -3,6 +3,8 @@ import { Product } from "../../models/Product";
 import { protectedRoute } from "../../middleware/auth-middleware";
 import { InvoiceItem } from "../../models/InvoiceItem";
 import { v4 as uuidv4 } from "uuid";
+
+
 export const productsRouter: Router = express.Router();
 
 productsRouter.get("/", protectedRoute, async (req: Request, res: Response) => {

@@ -2,7 +2,6 @@ import express, { Response, Request, Router } from "express";
 
 import { Category } from "../../models/Category";
 import { protectedRoute } from "../../middleware/auth-middleware";
-import { Op } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 export const categoriesRouter=express.Router();

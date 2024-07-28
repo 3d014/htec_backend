@@ -87,7 +87,7 @@ measuringUnitRouter.delete('/', protectedRoute, async(req: Request , res: Respon
 
 
         }else{
-            return res.status(409).json({success:false, message: "This measuring unit is already being used by a product"})
+            return res.status(409).json({success:false, message: "This measuring unit is already being used in a product"})
         }
         
 
