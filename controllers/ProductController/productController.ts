@@ -85,14 +85,16 @@ productsRouter.post(
 
       if(!measuringUnitExists){
         const measuringUnitId = uuidv4();
-        const measuringUnitName = measuringUnit;
+        let measuringUnitLower = measuringUnit as unknown as string;
+        measuringUnitLower = measuringUnitLower.toLowerCase();      
+          
         await MeasuringUnit.create({
           measuringUnitId,
-          measuringUnitName
+          measuringUnitName:measuringUnitLower
         })
 
           
-      }
+      };
 
       if(!productExists){
         await Product.create({

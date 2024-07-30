@@ -11,7 +11,7 @@ measuringUnitRouter.get("/",protectedRoute,async (req:Request,res:Response)=>{
     const {measuringUnitId}= req.body;
     let measuringUnit;
     try{
-        if(!measuringUnit){
+        if(!measuringUnitId){
             measuringUnit=await MeasuringUnit.findAll()
         } else {
             measuringUnit =await MeasuringUnit.findAll({
@@ -32,17 +32,19 @@ measuringUnitRouter.get("/",protectedRoute,async (req:Request,res:Response)=>{
 })
 
 measuringUnitRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
-    const {abbreviation,measuringUnitName}=req.body;
-    
+    const {measuringUnitName}=req.body;
+    let measuringUnitLower = measuringUnitName as unknown as string;
+    measuringUnitLower = measuringUnitLower.toLowerCase();
     const measuringUnitId=uuidv4()
     try {
         const exists = await MeasuringUnit.findOne({
-            where :{ measuringUnitName : req.body.measuringUnitName.toLowerCase()}
+            where :{ measuringUnitName : measuringUnitLower}
         })
 
         if(!exists){
             await MeasuringUnit.create({
-                measuringUnitId,abbreviation,measuringUnitName
+                measuringUnitId,
+                measuringUnitName:measuringUnitLower
             })
             return res.status(200).json({success:true, message:"Measuring unit added successfully"});
         }else{
