@@ -10,6 +10,7 @@ import { vendorRouter } from "./controllers/VendorController/vendorController";
 import { budgetRouter } from "./controllers/BudgetController/budgetController";
 import { categoriesRouter } from "./controllers/CategoryController/categoryController";
 import { invoiceRouter } from "./controllers/InvoiceController/invoiceController";
+import { measuringUnitRouter } from "./controllers/MeasuringUnitController/measuringUnitController";
 
 export const app = express();
 app.use(cors());
@@ -22,6 +23,7 @@ app.use("/api/vendors",vendorRouter);
 app.use("/api/budget", budgetRouter);
 app.use("/api/invoices",invoiceRouter);
 app.use("/api/categories",categoriesRouter);
+app.use("api/measuringUnits",measuringUnitRouter);
 (async () => {
   await sequelize.sync({ force: false });
   app.listen(5000, () => {

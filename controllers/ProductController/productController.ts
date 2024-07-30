@@ -73,10 +73,12 @@ productsRouter.post(
     const { productName, measuringUnit, categoryId, description} = req.body;
     const productId=uuidv4()
     try{
-      const exists = await Product.findOne({
+      const productExists = await Product.findOne({
         where :{ productName }
       })
-      if(!exists){
+
+      
+      if(!productExists){
         await Product.create({
           productId,
           productName,
