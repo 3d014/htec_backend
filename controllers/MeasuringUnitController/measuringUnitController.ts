@@ -61,7 +61,6 @@ measuringUnitRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
     }
 )
 
-//put metoda provjerava dal je id vec u bazi i taj promjenjeni ne smije biti jednak ni 
 
 measuringUnitRouter.put("/", protectedRoute, async (req: Request, res: Response) => {
     const { measuringUnitId, measuringUnitName} = req.body;
