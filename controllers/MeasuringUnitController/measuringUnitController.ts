@@ -4,7 +4,7 @@ import { MeasuringUnit } from "../../models/MeasuringUnit";
 import { protectedRoute } from "../../middleware/auth-middleware";
 import { v4 as uuidv4 } from "uuid";
 import { Product } from "../../models/Product";
-
+import {Op} from 'sequelize';
 export const measuringUnitRouter=express.Router();
 
 measuringUnitRouter.get("/",protectedRoute,async (req:Request,res:Response)=>{
@@ -61,6 +61,35 @@ measuringUnitRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
     }
 )
 
+//put metoda provjerava dal je id vec u bazi i taj promjenjeni ne smije biti jednak ni 
+
+measuringUnitRouter.put("/", protectedRoute, async (req: Request, res: Response) => {
+    const { measuringUnitId, measuringUnitName} = req.body;
+    try {
+       const  measuringUnit=  await MeasuringUnit.findOne({
+        where: {
+          [Op.and]: [
+            { measuringUnitId: measuringUnitId },
+            {
+              measuringUnitName: {
+                [Op.ne]: measuringUnitName
+              }
+            }
+          ]
+        }
+      });
+
+       measuringUnit?.update({
+        measuringUnitName:measuringUnitName
+       })
+       measuringUnit?.save()
+    } catch(error){
+      console.log(error)
+    }
+    return res.status(200).end();
+  }
+
+);
 
 
 measuringUnitRouter.delete('/', protectedRoute, async(req: Request , res: Response) =>{
