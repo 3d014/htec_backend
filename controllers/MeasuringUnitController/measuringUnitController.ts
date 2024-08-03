@@ -46,7 +46,7 @@ measuringUnitRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
                 measuringUnitId,
                 measuringUnitName:measuringUnitLower
             })
-            return res.status(200).json({success:true, message:"Measuring unit added successfully"});
+            return res.status(200).json({success:true, message:"Measuring unit added successfully", measuringUnitId, measuringUnitName:measuringUnitLower});
         }else{
 
             return res.status(409).json({success:false, message:"This measuring unit already exists"})
