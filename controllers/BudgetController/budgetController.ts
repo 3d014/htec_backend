@@ -7,21 +7,47 @@ import { CategoryBudget } from "../../models/Category-Budget";
 import { Category } from "../../models/Category";
 import CategoryInstance from "../../interfaces/Category";
 import RequestBody from "../../interfaces/Budget";
-
+import calculateRate from "../../utils/ExchangeRateAPI/calculateRate";
 
 export const budgetRouter = express.Router();
 
 
 
-budgetRouter.get('/:year/:month', protectedRoute, async (req: Request, res: Response) => {
-  const { year, month } = req.params;
-  
+
+budgetRouter.get('/:month/:year/:categoryId',protectedRoute,async(req:Request, res:Response)=>{
+  const {month,year,categoryId} = req.params;
+  try{
+    const budget = await Budget.findOne({
+      where:{month, year}
+    });
+
+    if(!budget){
+      return res.status(404).json({success:false, message:"Budget not found"})
+    }
+
+    const budgetCategory = await CategoryBudget.findOne({
+      where:{budgetId:budget.dataValues.budgetId, categoryId}
+    });
+
+    const allowedBudgetKM = Number(budgetCategory?.dataValues.totalValue);
+    const totalCost = Number(budgetCategory?.dataValues.spentValue);
+    const remainingBudget = allowedBudgetKM - totalCost;
+    const allowedBudgetEUR = await calculateRate(allowedBudgetKM);
+    return res.status(200).json({success:true,allowedBudgetEUR,allowedBudgetKM,totalCost,remainingBudget});
+
+  }catch(error){
+    console.error(error);
+    return res.status(500).json({success:false,message:"Internal server error"});
+  }
+
+});
+
+
+budgetRouter.get('/:month/:year', protectedRoute, async (req: Request, res: Response) => {
+  const {month, year} = req.params;
   try {
       const budget = await Budget.findOne({
-          where: {
-              year,
-              month
-          }
+          where: {month, year}
       });
 
       if (!budget) {
@@ -30,7 +56,7 @@ budgetRouter.get('/:year/:month', protectedRoute, async (req: Request, res: Resp
 
       return res.status(200).json({ success: true, budget });
   } catch (error) {
-      console.error("Error while trying to fetch budget", error);
+      console.error(error);
       return res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
