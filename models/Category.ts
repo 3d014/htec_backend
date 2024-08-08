@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/SequalizeSetup";
 
+
 export const Category = sequelize.define("Category",{
     categoryId: { type: DataTypes.STRING, primaryKey: true, autoIncrement: false },
     categoryName: {
@@ -8,5 +9,5 @@ export const Category = sequelize.define("Category",{
         primaryKey: false,
         autoIncrement: false,
     }
-})
+});
 

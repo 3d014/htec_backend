@@ -1,11 +1,14 @@
 import express, { Response, Request, Router } from "express";
-
 import { MeasuringUnit } from "../../models/MeasuringUnit";
 import { protectedRoute } from "../../middleware/auth-middleware";
 import { v4 as uuidv4 } from "uuid";
 import { Product } from "../../models/Product";
 import {Op} from 'sequelize';
+
+
 export const measuringUnitRouter=express.Router();
+
+
 
 measuringUnitRouter.get("/",protectedRoute,async (req:Request,res:Response)=>{
     const {measuringUnitId}= req.body;
@@ -15,21 +18,17 @@ measuringUnitRouter.get("/",protectedRoute,async (req:Request,res:Response)=>{
             measuringUnit=await MeasuringUnit.findAll()
         } else {
             measuringUnit =await MeasuringUnit.findAll({
-                where:{
-                    measuringUnitId:req.body.measuringUnitId
-                }
+                where:{measuringUnitId}
             })
         }
         return res.status(200).json(measuringUnit);
-
-
     }catch(error){
         console.error(error);
         return res.status(500).json({message:"Internal server error"});
     }
+});
 
- 
-})
+
 
 measuringUnitRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
     const {measuringUnitName}=req.body;
@@ -40,7 +39,6 @@ measuringUnitRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
         const exists = await MeasuringUnit.findOne({
             where :{ measuringUnitName : measuringUnitLower}
         })
-
         if(!exists){
             await MeasuringUnit.create({
                 measuringUnitId,
@@ -50,16 +48,12 @@ measuringUnitRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
         }else{
 
             return res.status(409).json({success:false, message:"This measuring unit already exists"})
-
         } 
     }catch (error){
             console.error(error)
             return res.status(500).json({message:"Internal server error"})
-        }
-        
-        
-    }
-)
+        }   
+});
 
 
 measuringUnitRouter.put("/", protectedRoute, async (req: Request, res: Response) => {
@@ -86,17 +80,15 @@ measuringUnitRouter.put("/", protectedRoute, async (req: Request, res: Response)
       console.log(error)
     }
     return res.status(200).end();
-  }
+});
 
-);
 
 
 measuringUnitRouter.delete('/', protectedRoute, async(req: Request , res: Response) =>{
     const {measuringUnitId} = req.body;
     const alreadyInUse = await Product.findAll({
         where: {measuringUnitId : req.body.measuringUnitId}
-    })
-    
+    })  
     try{
         if(!alreadyInUse){
             await MeasuringUnit.destroy({
@@ -115,17 +107,13 @@ measuringUnitRouter.delete('/', protectedRoute, async(req: Request , res: Respon
                   .json({ success: false, msg: "Measuring unit doesn't exist" });
               });
 
-
         }else{
             return res.status(409).json({success:false, message: "This measuring unit is already being used in a product"})
         }
         
 
     }catch(error){
-
         console.error(error);
         return res.status(500).json({success: false, message: "Internal server error"});
-
-    }
-    
-})
+    }    
+});

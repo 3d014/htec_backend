@@ -1,10 +1,12 @@
 import express, { Response, Request, Router } from "express";
-
 import { Category } from "../../models/Category";
 import { protectedRoute } from "../../middleware/auth-middleware";
 import { v4 as uuidv4 } from "uuid";
 
+
 export const categoriesRouter=express.Router();
+
+
 
 categoriesRouter.get("/",protectedRoute,async (req:Request,res:Response)=>{
     const {categoryId}=req.body;
@@ -13,7 +15,7 @@ categoriesRouter.get("/",protectedRoute,async (req:Request,res:Response)=>{
         if(!categoryId){
             categories=await Category.findAll()
         } else {
-            categories=await Category.findAll({
+            categories=await Category.findOne({
                 where:{
                     categoryId:req.body.categoryId
                 }
@@ -21,19 +23,19 @@ categoriesRouter.get("/",protectedRoute,async (req:Request,res:Response)=>{
         }
         return res.status(200).json(categories);
 
-
     }catch(error){
         console.error(error);
         return res.status(500).json({message:"Internal server error"});
     }
-
  
-})
+});
+
+
 
 categoriesRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
     const {categoryName}=req.body;
-
     const categoryId=uuidv4()
+
     try {
         const exists = await Category.findOne({
             where :{ categoryName }
@@ -41,22 +43,22 @@ categoriesRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
 
         if(!exists){
             await Category.create({
-                categoryName,categoryId
+                categoryId,
+                categoryName
             })
             return res.status(200).json({success:true, message:"Category created successfully"});
         }else{
-
             return res.status(409).json({success:false, message:"This category already exists"})
 
         } 
     }catch (error){
             console.error(error)
             return res.status(500).json({message:"Internal server error"})
-        }
-        
-        
-    }
-)
+        }         
+});
+
+
+
 categoriesRouter.put("/", protectedRoute, async (req: Request, res: Response) => {
     const { categoryId, categoryName } = req.body;
     try {
@@ -71,8 +73,9 @@ categoriesRouter.put("/", protectedRoute, async (req: Request, res: Response) =>
       console.log(error)
     }
     return res.status(200).end();
-  }
-);
+});
+
+
 
 categoriesRouter.delete('/', protectedRoute, async(req: Request , res: Response) =>{
     const {categoryId} = req.body;
@@ -80,9 +83,7 @@ categoriesRouter.delete('/', protectedRoute, async(req: Request , res: Response)
     try{
         if(categoryId){
             await Category.destroy({
-                where: {
-                    categoryId : req.body.categoryId,
-                }
+                where: {categoryId}
             })
             .then(() => {
                 return res
@@ -95,14 +96,11 @@ categoriesRouter.delete('/', protectedRoute, async(req: Request , res: Response)
                   .json({ success: false, msg: "Category doesn't exist" });
               });
 
-
         }
 
     }catch(error){
-
         console.error(error);
         return res.status(500).json({success: false, message: "Internal server error"});
 
-    }
-    
-})
+    } 
+});

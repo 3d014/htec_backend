@@ -1,9 +1,20 @@
-interface BudgetInstance{
-    budgetId:string,
-    totalBudget:number,
-    spentBudget:number,
-    year:string,
-    month:string
+interface BudgetData {
+    [categoryId: string]: number;
+}
+interface RequestBody {
+    budgetData: BudgetData;
+    month: string;
+    year: number;
+    spentBudget?: number; 
 }
 
-export default BudgetInstance
+interface BudgetInstance {
+    budgetId: string,
+    totalBudget : number,
+    spentBudget : number,
+    year : number,
+    month : number
+}
+
+
+export default RequestBody

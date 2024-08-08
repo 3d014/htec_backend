@@ -8,31 +8,90 @@ import { v4 as uuidv4 } from "uuid";
 
 export const productsRouter: Router = express.Router();
 
+
+
 productsRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
   const { productId } = req.body;
   let products;
-
   try{
-   
-
-    
     if (!productId) {
       products = await Product.findAll();
     } else {
-      products = await Product.findAll({
-        where: {
-          productId: req.body.productId
-        },
+      products = await Product.findOne({
+        where: {productId}
       });
     }
-
     return res.status(200).json(products);
   }catch(error){
       console.error(error);
       return res.status(500).json({message:"Internal server error"});
-
   }
 });
+
+productsRouter.post("/",protectedRoute,async (req: Request, res: Response) => {
+    const { productName, measuringUnit, categoryId, description} = req.body;
+    const productId=uuidv4()
+    
+    try{
+      const productExists = await Product.findOne({
+        where :{ productName }
+      })
+      const measuringUnitExists = await MeasuringUnit.findAll({
+        where: {measuringUnitName : measuringUnit.toLowerCase()}
+      });
+
+      if(!measuringUnitExists){
+        const measuringUnitId = uuidv4();
+        let measuringUnitLower = measuringUnit as unknown as string;
+        measuringUnitLower = measuringUnitLower.toLowerCase();      
+        await MeasuringUnit.create({
+          measuringUnitId,
+          measuringUnitName:measuringUnitLower
+        })
+      };
+
+      if(!productExists){
+        await Product.create({
+          productId,
+          productName,
+          measuringUnit,
+          categoryId,
+          description
+        });
+        
+      }else{
+        return res.status(409).json({success:false, message:"This product already exists"})
+      }
+    }catch(error){
+      console.error(error);
+      res.status(500).json({success:false, message: "Internal server error"});
+
+    }
+    return res.status(200).json({success:true, message:"Product created successfully"});
+  }
+);
+
+
+
+productsRouter.put("/", protectedRoute, async (req: Request, res: Response) => {
+      const { productId, productName, measuringUnit, categoryId } = req.body;
+      try {
+         const prod = await Product.findOne({
+          where: {productId}
+         })
+         prod?.update({
+          productName: productName,
+          measuringUnit: measuringUnit,
+          categoryId: categoryId
+         })
+         prod?.save()
+      } catch(error){
+        console.log(error)
+      }
+      return res.status(200).end();
+});
+
+
 
 productsRouter.delete("/", protectedRoute, async (req: Request, res: Response) => {
   const { productId } = req.body;
@@ -42,7 +101,6 @@ productsRouter.delete("/", protectedRoute, async (req: Request, res: Response) =
     })
     if(productUsed){
       return res.status(409).json({success:false, message:"Product couldn't be deleted because it is being used in invoice"})
-
     }
     else if(productId) {
       await Product.destroy({
@@ -67,78 +125,6 @@ productsRouter.delete("/", protectedRoute, async (req: Request, res: Response) =
   }
 });
 
-productsRouter.post(
-  "/",
-  protectedRoute,
-  async (req: Request, res: Response) => {
-    const { productName, measuringUnit, categoryId, description} = req.body;
-    const productId=uuidv4()
-    
-    
-    try{
-      const productExists = await Product.findOne({
-        where :{ productName }
-      })
-      const measuringUnitExists = await MeasuringUnit.findAll({
-        where: {measuringUnitName : measuringUnit.toLowerCase()}
-      });
 
-      if(!measuringUnitExists){
-        const measuringUnitId = uuidv4();
-        let measuringUnitLower = measuringUnit as unknown as string;
-        measuringUnitLower = measuringUnitLower.toLowerCase();      
-          
-        await MeasuringUnit.create({
-          measuringUnitId,
-          measuringUnitName:measuringUnitLower
-        })
-
-          
-      };
-
-      if(!productExists){
-        await Product.create({
-          productId,
-          productName,
-          measuringUnit,
-          categoryId,
-          description
-        });
-        
-      }else{
-        return res.status(409).json({success:false, message:"This product already exists"})
-
-      }
-    }catch(error){
-      console.error(error);
-      res.status(500).json({success:false, message: "Internal server error"});
-
-    }
-    
-    
-    return res.status(200).end();
-  }
-);
-
-
-productsRouter.put("/", protectedRoute, async (req: Request, res: Response) => {
-      const { productId, productName, measuringUnit, categoryId } = req.body;
-      try {
-         const prod = await Product.findOne({
-          where: {productId}
-         })
-         prod?.update({
-          productName: productName,
-          measuringUnit: measuringUnit,
-          categoryId: categoryId
-         })
-         prod?.save()
-      } catch(error){
-        console.log(error)
-      }
-      return res.status(200).end();
-    }
- 
-  );
 
 
