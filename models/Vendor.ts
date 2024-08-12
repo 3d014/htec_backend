@@ -49,8 +49,5 @@ export const Vendor = sequelize.define("Vendor",{
         primaryKey : false,
         autoIncrement : false,
       }
+});
 
-
-})
-
-// Vendor is synchronized with latest ER Model

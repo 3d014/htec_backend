@@ -11,7 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
     "@veryfi/veryfi-sdk": "^1.3.2",
+=======
+    "axios": "^1.7.3",
+>>>>>>> d2a19b2948b5a4ab194e9489241193b0718dbc10
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

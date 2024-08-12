@@ -2,7 +2,7 @@ interface ProductInstance {
     productId: string;
     productName: string;
     measuringUnit: string;
-    categoryId: string; // foreign key to Categories
+    categoryId: string; 
   }
 
-  export default ProductInstance
+export default ProductInstance

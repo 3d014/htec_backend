@@ -9,9 +9,16 @@ import { Model } from "sequelize";
 import { UserType } from "../interfaces/User";
 import { protectedRoute } from "../middleware/auth-middleware";
 import { Request as AuthRequest } from "../interfaces/Request";
+
+
 dotenv.config();
 
+
+
 export const authRouter: Router = express.Router();
+
+
+
 
 authRouter.post("/login", async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -54,6 +61,8 @@ authRouter.post("/login", async (req: Request, res: Response) => {
     }
 });
 
+
+
 authRouter.post("/logout", (req: Request, res: Response) => {
   const { token } = req.body;
   try {
@@ -71,6 +80,8 @@ authRouter.post("/logout", (req: Request, res: Response) => {
       .json({ success: false, msg: "error verifying token" });
   }
 });
+
+
 
 authRouter.get("/test", protectedRoute, (req: AuthRequest, res: Response) => {
   return res.send(`hello from protected ${req.user?.firstName}`);

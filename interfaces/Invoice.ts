@@ -2,7 +2,6 @@ export interface ProductSum{
     productId:string,
     productName:string,
     productSum:number
-
 }
 
 export interface InvoiceInstance {

@@ -6,7 +6,11 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 import bcrypt from "bcrypt";
 
+
 export const resetPasswordRouter: Router = express.Router();
+
+
+
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT),
@@ -16,6 +20,8 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SMTP_PASSWORD,
   },
 });
+
+
 
 resetPasswordRouter.post("/getlink", async (req: Request, res: Response) => {
   const { email } = req.body;

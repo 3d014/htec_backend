@@ -4,7 +4,10 @@ import { protectedRoute } from "../../middleware/auth-middleware";
 import { Invoice } from "../../models/Invoice";
 import { v4 as uuidv4 } from "uuid";
 
+
 export const vendorRouter: Router = express.Router();
+
+
 
 vendorRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
     const { vendorId } = req.body;
@@ -43,7 +46,6 @@ vendorRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
 
   vendorRouter.post("/", protectedRoute, async (req: Request, res: Response) => {
     const { vendorName, vendorAddress, vendorIdentificationNumber,vendorPDVNumber, vendorCity, vendorTelephone, vendorEmail, vendorTransactionNumber,supportsAvans } = req.body;
-
     try {
           const exists = await Vendor.findOne({
             where :{ vendorName }
@@ -70,7 +72,6 @@ vendorRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
 
         }else{
           return res.status(409).json({success:false, message:"This vendor already exists"})
-
         }
         
     } catch (error) {
@@ -90,22 +91,15 @@ vendorRouter.delete('/', protectedRoute, async (req:Request, res: Response) =>{
 
     if(vendorUsed){
       return res.status(409).json({success:false, message:"Vendor couldn't be deleted because it is already used in invoice"})
-
     }
 
     if(vendorId){
-      await Vendor.destroy({
-        where:{
-          vendorId : req.body.vendorId,
-        } 
-      })
+      await Vendor.destroy({where:{vendorId} })
     .then(() => {
       return res.status(200).json({sucess: true, message: "Vendor deleted successfully"});
-
     })
-
     .catch(() => {
-      return res.status(400).json({success: false, message : "Couldn't find vendor with that id"});
+      return res.status(400).json({success: false, message : "Vendor with that ID doesn't exist"});
     });
 
   }}
@@ -113,11 +107,12 @@ vendorRouter.delete('/', protectedRoute, async (req:Request, res: Response) =>{
     console.error(error);
     return res.status(500).json({success : false, message: "Internal server error"});
   }
-})
+});
+
+
 
 vendorRouter.put('/', protectedRoute, async (req: Request, res: Response) => {
   const { vendorId, vendorName, vendorAddress, vendorIdentificationNumber, vendorPDVNumber, vendorCity, vendorTelephone, vendorEmail, vendorTransactionNumber, supportsAvans } = req.body;
-
   try {
     const vendor = await Vendor.findOne({
       where: { vendorId }

@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { BlacklistToken } from "../models/TokenBlacklist";
 import { AuthUser, Request } from "../interfaces/Request";
 
+
 export const protectedRoute = async (
   req: Request,
   res: Response,
