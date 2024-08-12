@@ -31,35 +31,33 @@ measuringUnitRouter.get("/",protectedRoute,async (req:Request,res:Response)=>{
  
 })
 
-measuringUnitRouter.post("/",protectedRoute,async(req:Request,res:Response)=>{
-    const {measuringUnitName}=req.body;
-    let measuringUnitLower = measuringUnitName as unknown as string;
-    measuringUnitLower = measuringUnitLower.toLowerCase();
-    const measuringUnitId=uuidv4()
+measuringUnitRouter.post("/", protectedRoute, async (req: Request, res: Response) => {
+    const { measuringUnitName } = req.body;
+    const measuringUnitLower = measuringUnitName.toLowerCase();
+    const measuringUnitId = uuidv4();
+
     try {
-        const exists = await MeasuringUnit.findOne({
-            where :{ measuringUnitName : measuringUnitLower}
-        })
+        const exists = await MeasuringUnit.findOne({ where: { measuringUnitName: measuringUnitLower } });
 
-        if(!exists){
-            await MeasuringUnit.create({
+        if (!exists) {
+            const newMeasuringUnit = await MeasuringUnit.create({
                 measuringUnitId,
-                measuringUnitName:measuringUnitLower
-            })
-            return res.status(200).json({success:true, message:"Measuring unit added successfully"});
-        }else{
-
-            return res.status(409).json({success:false, message:"This measuring unit already exists"})
-
-        } 
-    }catch (error){
-            console.error(error)
-            return res.status(500).json({message:"Internal server error"})
+                measuringUnitName: measuringUnitLower
+            });
+            return res.status(200).json({
+                success: true,
+                message: "Measuring unit added successfully",
+                measuringUnitId: measuringUnitId,
+                measuringUnitName: measuringUnitLower
+            });
+        } else {
+            return res.status(409).json({ success: false, message: "This measuring unit already exists" });
         }
-        
-        
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal server error" });
     }
-)
+});
 
 
 

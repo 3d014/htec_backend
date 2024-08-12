@@ -3,11 +3,7 @@ import { sequelize } from "../db/SequalizeSetup";
 
 export const MeasuringUnit = sequelize.define("MeasuringUnit", {
   measuringUnitId: { type: DataTypes.STRING, primaryKey: true, autoIncrement: false },
-  abbreviation: {
-    type: DataTypes.STRING,
-    primaryKey: false,
-    autoIncrement: false,
-  },
+ 
   measuringUnitName: {
     type: DataTypes.STRING,
     primaryKey: false,

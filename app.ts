@@ -23,7 +23,7 @@ app.use("/api/vendors",vendorRouter);
 app.use("/api/budget", budgetRouter);
 app.use("/api/invoices",invoiceRouter);
 app.use("/api/categories",categoriesRouter);
-app.use("api/measuringUnits",measuringUnitRouter);
+app.use("/api/measuringUnits",measuringUnitRouter);
 (async () => {
   await sequelize.sync({ force: false });
   app.listen(5000, () => {
