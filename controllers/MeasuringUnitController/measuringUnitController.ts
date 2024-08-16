@@ -21,6 +21,7 @@ measuringUnitRouter.get("/",protectedRoute,async (req:Request,res:Response)=>{
                 where:{measuringUnitId}
             })
         }
+        
         return res.status(200).json(measuringUnit);
     }catch(error){
         console.error(error);
@@ -31,39 +32,17 @@ measuringUnitRouter.get("/",protectedRoute,async (req:Request,res:Response)=>{
 
 
 measuringUnitRouter.post("/", protectedRoute, async (req: Request, res: Response) => {
-    const { measuringUnitName } = req.body;
+    const { measuringUnitName,measuringUnitId } = req.body;
     const measuringUnitLower = measuringUnitName.toLowerCase();
-    const measuringUnitId = uuidv4();
+   
 
     try {
-<<<<<<< HEAD
-        const exists = await MeasuringUnit.findOne({ where: { measuringUnitName: measuringUnitLower } });
-
-        if (!exists) {
-            const newMeasuringUnit = await MeasuringUnit.create({
-                measuringUnitId,
-                measuringUnitName: measuringUnitLower
-            });
-            return res.status(200).json({
-                success: true,
-                message: "Measuring unit added successfully",
-                measuringUnitId: measuringUnitId,
-                measuringUnitName: measuringUnitLower
-            });
-        } else {
-            return res.status(409).json({ success: false, message: "This measuring unit already exists" });
-        }
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Internal server error" });
-    }
-=======
         const exists = await MeasuringUnit.findOne({
             where :{ measuringUnitName : measuringUnitLower}
         })
         if(!exists){
             await MeasuringUnit.create({
-                measuringUnitId,
+                measuringUnitId:measuringUnitId?measuringUnitId:uuidv4(),
                 measuringUnitName:measuringUnitLower
             })
             return res.status(200).json({success:true, message:"Measuring unit added successfully", measuringUnitId, measuringUnitName:measuringUnitLower});
@@ -102,7 +81,6 @@ measuringUnitRouter.put("/", protectedRoute, async (req: Request, res: Response)
       console.log(error)
     }
     return res.status(200).end();
->>>>>>> d2a19b2948b5a4ab194e9489241193b0718dbc10
 });
 
 

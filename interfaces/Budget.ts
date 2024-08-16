@@ -2,7 +2,7 @@ interface BudgetData {
     [categoryId: string]: number;
 }
 interface RequestBody {
-    budgetData: BudgetData;
+    budgetData: BudgetData[];
     month: string;
     year: number;
     spentBudget?: number; 

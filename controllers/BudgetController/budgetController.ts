@@ -14,7 +14,7 @@ export const budgetRouter = express.Router();
 
 
 
-budgetRouter.get('/:month/:year/:categoryId',protectedRoute,async(req:Request, res:Response)=>{
+budgetRouter.get('/:year/:month/:categoryId',protectedRoute,async(req:Request, res:Response)=>{
   const {month,year,categoryId} = req.params;
   try{
     const budget = await Budget.findOne({
@@ -43,7 +43,7 @@ budgetRouter.get('/:month/:year/:categoryId',protectedRoute,async(req:Request, r
 });
 
 
-budgetRouter.get('/:month/:year', protectedRoute, async (req: Request, res: Response) => {
+budgetRouter.get('/:year/:month', protectedRoute, async (req: Request, res: Response) => {
   const {month, year} = req.params;
   try {
       const budget = await Budget.findOne({
@@ -113,6 +113,8 @@ budgetRouter.get('/', protectedRoute, async (req: Request, res: Response) => {
 budgetRouter.post('/', protectedRoute, async (req: Request, res: Response) => {
     try {
       const {budgetData,month,year } : RequestBody = req.body;
+
+      
       const budget=await Budget.findOne({
           where:{month:month,year:year}
         })
@@ -120,9 +122,17 @@ budgetRouter.post('/', protectedRoute, async (req: Request, res: Response) => {
       if (!budget){
         const budgetId = uuidv4();
         let totalBudget = 0;
-        for (const [categoryId, totalValue] of Object.entries(budgetData)) {
+        const newBudget = await Budget.create({
+          budgetId, 
+          totalBudget,
+          spentBudget:0,
+          month,
+          year
+        });
+        for (const {categoryId, totalValue} of budgetData) {
           totalBudget += totalValue;
           const categoryBudgetId = uuidv4();
+          
           const newCategoryBudget = await CategoryBudget.create({
               categoryBudgetId,
               categoryId,
@@ -131,22 +141,22 @@ budgetRouter.post('/', protectedRoute, async (req: Request, res: Response) => {
               spentValue:0
           })
         }
-        const newBudget = await Budget.create({
-          budgetId, 
-          totalBudget,
-          spentBudget:0,
-          month,
-          year
-        });
+        await newBudget.update(
+          {
+              totalBudget : totalBudget,
+          
+          }
+      )
+        
         
     
         return res.status(200).json({success:true, message: "Budget for selected month has been added successfully"});
     }else{
         const budgetId = budget.dataValues.budgetId;
         let totalBudget = 0;
-        for (const [categoryId, totalValue] of Object.entries(budgetData)) {
+        for (const {categoryId, totalValue} of budgetData) {
           totalBudget += totalValue;
-          const categoryBudgetId = uuidv4();
+         
           await CategoryBudget.update(
             {totalValue:totalValue},
             {where:{budgetId,categoryId}}
@@ -159,7 +169,7 @@ budgetRouter.post('/', protectedRoute, async (req: Request, res: Response) => {
             }
         )
         
-        return res.status(409).json({success:true, message:"Existing budget value has been updated"});
+        return res.status(200).json({success:true, message:"Existing budget value has been updated"});
     }}catch (error) {
       console.error(error);
       return res.status(500).json({ success: false, message: "Internal server error" });
@@ -200,13 +210,13 @@ budgetRouter.post('/', protectedRoute, async (req: Request, res: Response) => {
   
   
 
-  budgetRouter.put('/:month/:year', protectedRoute, async (req: Request, res: Response) => {
+  budgetRouter.put('/:year/:month', protectedRoute, async (req: Request, res: Response) => {
     try {
       const { month, year } = req.params;
       const { budgetData } : RequestBody = req.body;
 
       let totalBudget = 0;
-      for (const [categoryId, totalValue] of Object.entries(budgetData)) {
+      for (const {categoryId, totalValue} of budgetData) {
         totalBudget += totalValue;
 
         await CategoryBudget.update(
