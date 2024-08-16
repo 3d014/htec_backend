@@ -1,7 +1,6 @@
 interface CategoryInstance{
     categoryId: string,
-    categoryName: string
-        
-    }
+    categoryName: string      
+}
 
-    export default CategoryInstance
+export default CategoryInstance

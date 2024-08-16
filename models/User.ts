@@ -1,8 +1,6 @@
 import { sequelize } from "../db/SequalizeSetup";
-
 import { DataTypes } from "sequelize";
 
-//User model koji se slaze sa strukturom tabele User u nasoj bazi podataka
 
 export const User = sequelize.define("User", {
   userId: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -24,4 +22,3 @@ export const User = sequelize.define("User", {
   userRole: { type: DataTypes.STRING, primaryKey: false, autoIncrement: false },
 });
 
-// User is synchronoized with latest ER Model

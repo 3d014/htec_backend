@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/SequalizeSetup";
+import { Category } from "./Category";
 
 export const Product = sequelize.define("Product", {
   productId: { type: DataTypes.STRING, primaryKey: true, autoIncrement: false },
@@ -13,11 +14,14 @@ export const Product = sequelize.define("Product", {
     primaryKey: false,
     autoIncrement: false,
   },
-  categoryId: { // foreign key
+  categoryId: { 
     type: DataTypes.STRING,
     primaryKey: false,
-    autoIncrement: false,    
+    autoIncrement: false,   
+    references: {
+      model: Category,
+      key: 'categoryId'
+    }  
   }
 });
 
-// Product is synchronized with latest ER Model

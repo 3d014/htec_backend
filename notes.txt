@@ -1,5 +1,0 @@
-(produkt)dodat provjeru za delete ako se nalazi u fakturi -> error
-isto i za vendore
-
-dodat put metode
-

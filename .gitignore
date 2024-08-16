@@ -1,4 +1,6 @@
 node_modules
 .env
 temp.txt
-
+notes.txt
+notes.md
+out
