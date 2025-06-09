@@ -29,7 +29,7 @@ app.use("/api/measuringUnits",measuringUnitRouter);
 
 (async () => {
   await sequelize.sync({ force: false});
-  app.listen(5000, () => {
+  app.listen(5000,'0.0.0.0', () => {
     console.log("App listening on port 5000");
   });
 })();
