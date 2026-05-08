@@ -4,6 +4,7 @@ import { MeasuringUnit } from "../../models/MeasuringUnit";
 import { protectedRoute } from "../../middleware/auth-middleware";
 import { InvoiceItem } from "../../models/InvoiceItem";
 import { v4 as uuidv4 } from "uuid";
+import { Op } from "sequelize";
 
 
 export const productsRouter: Router = express.Router();
@@ -12,19 +13,30 @@ export const productsRouter: Router = express.Router();
 
 productsRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
   const { productId } = req.body;
-  let products;
-  try{
-    if (!productId) {
-      products = await Product.findAll();
-    } else {
-      products = await Product.findOne({
-        where: {productId}
-      });
+  const { search = '', page = '1', limit = '10' } = req.query as Record<string, string>;
+
+  try {
+    if (productId) {
+      const product = await Product.findOne({ where: { productId } });
+      return res.status(200).json(product);
     }
-    return res.status(200).json(products);
-  }catch(error){
-      console.error(error);
-      return res.status(500).json({message:"Internal server error"});
+
+    const pageNum = Math.max(1, parseInt(page));
+    const limitNum = Math.min(100, Math.max(1, parseInt(limit)));
+    const offset = (pageNum - 1) * limitNum;
+    const where = search ? { productName: { [Op.like]: `%${search}%` } } : {};
+
+    const { count, rows } = await Product.findAndCountAll({
+      where,
+      limit: limitNum,
+      offset,
+      order: [['productName', 'ASC']],
+    });
+
+    return res.status(200).json({ data: rows, total: count, page: pageNum, limit: limitNum });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 

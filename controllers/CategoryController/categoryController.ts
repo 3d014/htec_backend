@@ -2,32 +2,40 @@ import express, { Response, Request, Router } from "express";
 import { Category } from "../../models/Category";
 import { protectedRoute } from "../../middleware/auth-middleware";
 import { v4 as uuidv4 } from "uuid";
+import { Op } from "sequelize";
 
 
 export const categoriesRouter=express.Router();
 
 
 
-categoriesRouter.get("/",protectedRoute,async (req:Request,res:Response)=>{
-    const {categoryId}=req.body;
-    let categories;
-    try{
-        if(!categoryId){
-            categories=await Category.findAll()
-        } else {
-            categories=await Category.findOne({
-                where:{
-                    categoryId:req.body.categoryId
-                }
-            })
-        }
-        return res.status(200).json(categories);
+categoriesRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
+    const { categoryId } = req.body;
+    const { search = '', page = '1', limit = '10' } = req.query as Record<string, string>;
 
-    }catch(error){
+    try {
+        if (categoryId) {
+            const category = await Category.findOne({ where: { categoryId } });
+            return res.status(200).json(category);
+        }
+
+        const pageNum = Math.max(1, parseInt(page));
+        const limitNum = Math.min(100, Math.max(1, parseInt(limit)));
+        const offset = (pageNum - 1) * limitNum;
+        const where = search ? { categoryName: { [Op.like]: `%${search}%` } } : {};
+
+        const { count, rows } = await Category.findAndCountAll({
+            where,
+            limit: limitNum,
+            offset,
+            order: [['categoryName', 'ASC']],
+        });
+
+        return res.status(200).json({ data: rows, total: count, page: pageNum, limit: limitNum });
+    } catch (error) {
         console.error(error);
-        return res.status(500).json({message:"Internal server error"});
+        return res.status(500).json({ message: "Internal server error" });
     }
- 
 });
 
 

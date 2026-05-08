@@ -3,42 +3,49 @@ import { Vendor } from "../../models/Vendor";
 import { protectedRoute } from "../../middleware/auth-middleware";
 import { Invoice } from "../../models/Invoice";
 import { v4 as uuidv4 } from "uuid";
+import { Op } from "sequelize";
 
 
 export const vendorRouter: Router = express.Router();
 
 
 
+const parseVendorArrayFields = (vendors: any[]) => {
+  vendors.forEach((vendor: any) => {
+    vendor.vendorTransactionNumber = vendor.vendorTransactionNumber.split(',').map((s: string) => s.trim());
+    vendor.vendorTelephone = vendor.vendorTelephone.split(',').map((s: string) => s.trim());
+    vendor.vendorEmail = vendor.vendorEmail.split(',').map((s: string) => s.trim());
+  });
+};
+
 vendorRouter.get("/", protectedRoute, async (req: Request, res: Response) => {
     const { vendorId } = req.body;
-    let vendors;
-    try{
-      if (!vendorId) {
-        vendors = await Vendor.findAll();
+    const { search = '', page = '1', limit = '10' } = req.query as Record<string, string>;
 
-      } else {
-        vendors = await Vendor.findAll({
-          where: {
-            vendorId: req.body.vendorId,
-          },
-        });
+    try {
+      if (vendorId) {
+        const vendor = await Vendor.findOne({ where: { vendorId } });
+        if (vendor) parseVendorArrayFields([vendor]);
+        return res.status(200).json(vendor);
       }
-      vendors.forEach((vendor: any) => {
-          vendor.vendorTransactionNumber = vendor.vendorTransactionNumber.split(',').map((number: string) => number.trim());
+
+      const pageNum = Math.max(1, parseInt(page));
+      const limitNum = Math.min(100, Math.max(1, parseInt(limit)));
+      const offset = (pageNum - 1) * limitNum;
+      const where = search ? { vendorName: { [Op.like]: `%${search}%` } } : {};
+
+      const { count, rows } = await Vendor.findAndCountAll({
+        where,
+        limit: limitNum,
+        offset,
+        order: [['vendorName', 'ASC']],
       });
 
-      vendors.forEach((vendor: any) => {
-          vendor.vendorTelephone = vendor.vendorTelephone.split(',').map((number: string) => number.trim());
-      });
-      vendors.forEach((vendor: any) => {
-          vendor.vendorEmail = vendor.vendorEmail.split(',').map((email: string) => email.trim());
-      });
-    
-      return res.status(200).json(vendors);
-    }catch(error){
-      console.error(error)
-      return res.status(500).json({message:"Internal server error"})
-
+      parseVendorArrayFields(rows as any[]);
+      return res.status(200).json({ data: rows, total: count, page: pageNum, limit: limitNum });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
     }
   });
 
